@@ -1,2 +1,0 @@
-[console_scripts]
-repoguard = repoguard.cli:main
