@@ -7,7 +7,6 @@ from pathlib import Path
 from repoguard.models import Finding
 from repoguard.scanners.base import ScannerAdapter
 from repoguard.utils import subprocess as proc
-from repoguard.utils.debug import dprint
 from repoguard.utils.owasp import semgrep_owasp
 
 MAX_FINDINGS = 200
@@ -21,7 +20,6 @@ class SemgrepAdapter(ScannerAdapter):
         return "semgrep"
 
     def run(self, target: Path) -> tuple[list[Finding], str]:
-        dprint("semgrep.start", str(target))  # [DEBUG] REMOVE in T6
         if not self.is_available():
             return self._unavailable("binary not installed")
         try:
@@ -41,7 +39,6 @@ class SemgrepAdapter(ScannerAdapter):
             if truncated:
                 findings.append(self._truncation_note(truncated))
                 status += f" (+{truncated} truncated)"
-            dprint("semgrep.done findings=", len(findings))  # [DEBUG] REMOVE in T6
             return findings, status
         except Exception as e:  # never raise
             return [], f"error ({e})"

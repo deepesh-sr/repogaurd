@@ -11,7 +11,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from repoguard.live import error_leak, exposed_paths, headers_cookies  # noqa: E402
 from repoguard.live.http import LiveClient  # noqa: E402
 
-print("[DEBUG:test] T3a module loaded")  # [DEBUG] println -- REMOVE in T6
 
 BASE = "http://testserver"
 

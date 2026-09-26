@@ -4,7 +4,6 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass
 
-from repoguard.utils.debug import dprint
 
 EVIDENCE_CAP = 1500
 MIN_INTERVAL = 0.2  # <=5 req/s politeness (A4 burst bypasses)
@@ -50,12 +49,10 @@ class LiveClient:
         try:
             r = self.session.request(method, url, headers=headers,
                                      timeout=self.timeout, allow_redirects=True, **kw)
-            dprint("http", method, url, r.status_code)  # [DEBUG] REMOVE in T6
             h = {k: v for k, v in r.headers.items()}
             body = r.text if isinstance(r.text, str) else ""
             return Resp(status=r.status_code, headers=h, body=body, url=url, method=method)
         except Exception as e:  # connection error / timeout -> None
-            dprint("http.error", method, url, str(e)[:100])  # [DEBUG] REMOVE in T6
             return None
 
 

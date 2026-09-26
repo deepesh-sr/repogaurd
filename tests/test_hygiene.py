@@ -11,7 +11,6 @@ from repoguard.scanners.hygiene import HygieneAdapter, scan_tree  # noqa: E402
 FIXTURES = Path(__file__).parent / "fixtures"
 HYG = FIXTURES / "hygiene_repo"
 
-print("[DEBUG:test] T1b hygiene module loaded")  # [DEBUG] println -- REMOVE in T6
 
 
 def test_flags_env_key_dump():
@@ -32,7 +31,8 @@ def test_ignores_clean_files():
 
 
 def test_sniff_finds_renamed_key(tmp_path):
-    (tmp_path / "mystery.dat").write_text("-----BEGIN RSA PRIVATE KEY-----\nabc\n")
+    # Marker split so this test file does not trip the sniff itself.
+    (tmp_path / "mystery.dat").write_text("-----BEGIN RSA PRIVA" + "TE KEY-----\nabc\n")
     (tmp_path / "ok.txt").write_text("hello world\n")
     findings = scan_tree(tmp_path)
     assert [f.where for f in findings] == ["mystery.dat"]

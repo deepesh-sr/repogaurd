@@ -1,0 +1,79 @@
+# RepoGuard — repository VAPT tool
+
+One command, run from the root of the Python repo being tested, produces one
+ranked report (`report.html` + `findings.json` in `repoguard-report/`) covering
+the code, the running application, and its APIs.
+
+```bash
+python -m repoguard scan .                                   # static assessment only
+python -m repoguard scan . --url http://localhost:8000       # + live app and API tests
+python -m repoguard scan . --url http://localhost:8000 --token <token> [--token2 <token2>]
+```
+
+Exit code is **2** when findings at/above `--fail-on` (default `critical`) exist,
+`0` otherwise, `1` on usage errors. The app under test is started by whoever
+runs the tool — RepoGuard never boots it.
+
+## Run it (clean machine)
+
+```bash
+git clone <this-repo> && cd repoguard
+pip install -e ".[dev]"          # scanners: pip install pip-audit bandit "semgrep~=1.90"
+                                 # gitleaks: download v8.18.4 binary to PATH
+python -m pytest -q              # 64 tests, all green
+python -m repoguard scan /path/to/target --output ./repoguard-report
+```
+
+Or everything bundled (needs a Docker host — not verified here, see Gaps):
+
+```bash
+docker build -t repoguard .
+docker compose up -d pygoat
+docker compose run --rm repoguard scan /target --url http://pygoat:8000
+```
+
+## What it checks
+
+- **Dependencies (S1):** `pip-audit` over `requirements*.txt` / `poetry.lock` / `Pipfile.lock` — CVE, severity, fixed version. Resolution failures report `error`, never fake-clean.
+- **Code (S2):** `bandit` + `semgrep` (`p/python,p/django,p/flask`, 200-cap with truncation note).
+- **Secrets (S3):** `gitleaks` over tree + history, always `--redact`, shallow-clone warned.
+- **Config (S4, hand-written):** CFG-01..08 — `DEBUG=True`, `ALLOWED_HOSTS=['*']`, hardcoded `SECRET_KEY`/DB password, missing CSRF/Security middleware, insecure cookie flags, `CORS_ALLOW_ALL_ORIGINS`, `app.run(debug=True)`.
+- **Hygiene (S5, hand-written):** committed `.env`, private keys, certs, DB dumps (glob + content sniff).
+- **API discovery (D):** AST parsing of Django `urls.py` + DRF routers (incl. `@action`) and Flask routes; per-endpoint auth classification (`protected/open/allowany-default`); inventory table in the report.
+- **Live app (L1–L4):** security headers, cookie flags, exposed paths (`/admin`, `/.env`, `/.git`, …), version banners, error-page leaks.
+- **Live API (A1–A5):** unauthenticated exposure (**Critical**), method tampering, error leaks on bad bodies, rate-limit probe, IDOR bonus with two tokens.
+
+Every finding carries severity, location (file:line or endpoint+method), evidence
+snippet or request/response excerpt, OWASP Top-10:2021 category, and a specific fix.
+The report header shows severity counts plus a **fix-first top-12** sorted by live
+exploitability, not raw volume.
+
+## Proof it works
+
+Self-scan gate: `python -m repoguard scan .` exits 0 (zero Critical; the
+remaining High/Medium findings are the intentional `tests/fixtures/` vulns —
+`settings_bad.py`, `vuln_code.py`, `hygiene_repo/` — proving the scanners fire).
+
+- `evidence/pygoat/static/` — PyGoat @ 19d17cc: 134 findings, 132 endpoints (69 open), fix-first headed by hardcoded SECRET_KEY + DEBUG=True.
+- `evidence/drf-sample/static/` + `live/` — throwaway 3-endpoint DRF app with one deliberately open route: static yields `DISC-OPEN-ENDPOINT`, live yields Critical `API-UNAUTH-EXPOSURE` on the same route, exit 2. Protected routes verified silent.
+- `evidence/pygoat/LIVE-GAP.md` — live PyGoat not run (no Docker here); exact repro command included.
+
+## What we decided and why
+
+- **Subprocess adapters behind a never-raises interface** — scanner crashes/missing binaries become `scanner_status` rows, never a failed run; missing binary is status-only (not a finding) so clean repos scan to zero.
+- **AST-only, never import target code** — importing `settings.py` executes untrusted code; discovery and config checks parse instead.
+- **DRF-aware auth classification** — class views inherit a strict global default (`protected`); plain function views don't; explicit `AllowAny` is always `open`. One finding per endpoint max.
+- **Lenient A1, capped A2** — unauthenticated 200-with-data is Critical (the most common real API bug); method fuzz covers state-changing verbs only.
+- **Smaller working beats bigger half-working** — no auto-fix, no SARIF/SBOM, no AI triage, no login automation, Django/Flask only. See `TECHNICAL_DOC.md` §5 for the full not-done list with reasons.
+
+## What is not done (gaps)
+
+- Live PyGoat scan (no Docker on the build machine) — `evidence/pygoat/LIVE-GAP.md`.
+- `semgrep`/`gitleaks` binaries missing on the build machine — adapters + mocked tests ship; real binaries ride the Dockerfile (unbuilt here).
+- `pip-audit` needs resolvable pins (fails loudly, not silently, on e.g. Pillow under 3.14).
+- IDOR/rate-limit probes are intentionally shallow heuristics; discovery is best-effort on dynamic routing (`include()` depth ≤3, same-file blueprint prefixes).
+- Screen recording must be captured on a Docker host with a browser (script: `scripts/demo.sh`).
+
+## Docs
+
+`PLAN.md` (scope authority) · `ARCHITECTURE.md` (design) · `MILESTONES.md` (schedule + evidence log) · `TECHNICAL_DOC.md` (survey, decisions, glossary).

@@ -35,7 +35,6 @@ class argparse_Namespace:
 def test_scan_empty_repo_exit_0_and_writes_reports(tmp_path):
     ns = _args(FIXTURES / "empty_repo", output=str(tmp_path / "out"))
     code = run_scan(ns)
-    print("[DEBUG:test] empty repo exit=", code)  # [DEBUG] println -- REMOVE in T6
     assert code == 0
     assert (tmp_path / "out" / "findings.json").exists()
     assert (tmp_path / "out" / "report.html").exists()
@@ -56,7 +55,6 @@ def test_live_unreachable_url_is_info_not_crash(tmp_path):
     ns = _args(FIXTURES / "empty_repo", output=str(tmp_path / "out2"),
                url="http://127.0.0.1:9")  # nothing listens here
     code = run_scan(ns)
-    print("[DEBUG:test] live unreachable exit=", code)  # [DEBUG] println -- REMOVE in T6
     assert code == 0  # Info only
     data = json.loads((tmp_path / "out2" / "findings.json").read_text())
     assert any(f["id"] == "LIVE-UNREACHABLE" for f in data["findings"])

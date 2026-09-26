@@ -11,7 +11,6 @@ from repoguard.models import Finding, Report, build_summary  # noqa: E402
 from repoguard.ranking import TOP_N, rank, top  # noqa: E402
 from repoguard.report.html_writer import write_html  # noqa: E402
 
-print("[DEBUG:test] T4 module loaded")  # [DEBUG] println -- REMOVE in T6
 
 
 def _mk(fid, sev, tool="bandit", fix="fix it"):

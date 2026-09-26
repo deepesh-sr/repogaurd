@@ -8,7 +8,6 @@ import re
 
 from repoguard.live.http import LiveClient, evidence, find_leak, looks_like_data, similar
 from repoguard.models import Endpoint, Finding
-from repoguard.utils.debug import dprint
 from repoguard.utils.owasp import TOOL_DEFAULT_OWASP
 
 OWASP = TOOL_DEFAULT_OWASP["api"]
@@ -39,7 +38,6 @@ def check_a1(base: str, client: LiveClient, ep: Endpoint,
         return None  # leak path (A3/L4), not exposure
     if not looks_like_data(resp):
         return None
-    dprint("api.a1 EXPOSED", method, ep.path)  # [DEBUG] REMOVE in T6
     ctrl = ""
     if client.token and authed is not None:
         ctrl = " Authenticated control call also succeeded, so the route is live."
@@ -68,7 +66,6 @@ def check_a2(base: str, client: LiveClient, ep: Endpoint) -> list[Finding]:
         if r is None:
             continue
         if r.status < 400 and similar(ref.body, r.body):
-            dprint("api.a2 TAMPER", m, ep.path)  # [DEBUG] REMOVE in T6
             out.append(Finding(
                 id=f"API-METHOD-{m}",
                 title=f"Undeclared {m} accepted on {ep.path} (declares {', '.join(sorted(declared))})",
@@ -109,7 +106,6 @@ def check_a3(base: str, client: LiveClient, ep: Endpoint) -> list[Finding]:
 
 def check_a4(base: str, client: LiveClient) -> list[Finding]:
     """Single global burst: 20 rapid GETs; no 429/headers -> rate-limit gap."""
-    dprint("api.a4 burst start")  # [DEBUG] REMOVE in T6
     limited = False
     for _ in range(20):
         r = client.request("GET", base.rstrip("/") + "/", throttle=False)
@@ -148,7 +144,6 @@ def check_a5(base: str, client: LiveClient, ep: Endpoint, token2: str) -> Findin
             continue
         r2 = client.request("GET", url, token=token2)
         if r2 is not None and r2.status == 200 and similar(r1.body, r2.body):
-            dprint("api.a5 IDOR", url)  # [DEBUG] REMOVE in T6
             return Finding(
                 id="API-IDOR",
                 title=f"Possible IDOR: second user's token reads {obj_path}",
@@ -182,5 +177,4 @@ def check_api(base_url: str, client: LiveClient, endpoints: list[Endpoint],
             if f5:
                 findings.append(f5)
     findings.extend(check_a4(base_url, client))
-    dprint("api.done tested=", tested, "findings=", len(findings))  # [DEBUG] REMOVE in T6
     return findings, tested

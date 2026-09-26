@@ -10,7 +10,6 @@ from pathlib import Path
 
 from repoguard.models import Finding
 from repoguard.scanners.base import ScannerAdapter
-from repoguard.utils.debug import dprint
 from repoguard.utils.files import iter_files
 from repoguard.utils.owasp import TOOL_DEFAULT_OWASP
 
@@ -176,7 +175,6 @@ def scan_file(path: Path) -> list[Finding]:
     is_settings = "settings" in path.name and any(
         k in assigns for k in ("DEBUG", "ALLOWED_HOSTS", "MIDDLEWARE", "SECRET_KEY", "DATABASES"))
     if is_settings:
-        dprint("config.settings", str(path))  # [DEBUG] REMOVE in T6
         for check in DJANGO_CHECKS:
             findings.extend(check(assigns, src, path))
     if "app.run(" in src or "Flask(" in src:
@@ -195,14 +193,12 @@ class ConfigAdapter(ScannerAdapter):
         return True
 
     def run(self, target: Path) -> tuple[list[Finding], str]:
-        dprint("config.start", str(target))  # [DEBUG] REMOVE in T6
         if not Path(target).exists():
             return [], f"error (target not found: {target})"
         try:
             findings: list[Finding] = []
             for f in iter_files(target, suffix=".py"):
                 findings.extend(scan_file(f))
-            dprint("config.done findings=", len(findings))  # [DEBUG] REMOVE in T6
             return findings, f"ok ({len(findings)} findings)"
         except Exception as e:  # never raise
             return [], f"error ({e})"

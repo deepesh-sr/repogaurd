@@ -9,7 +9,6 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from repoguard.utils.debug import dprint
 from repoguard.utils.files import iter_files
 
 URL_FUNCS = {"path", "re_path", "url"}
@@ -170,7 +169,6 @@ def _load_views(sibling: Path, view_module: str) -> _ViewIndex:
         if cand.is_file():
             try:
                 idx.add_tree(ast.parse(cand.read_text(encoding="utf-8", errors="replace")))
-                dprint("django.views", str(cand))  # [DEBUG] REMOVE in T6
             except (OSError, SyntaxError):
                 pass
     return idx
@@ -198,7 +196,6 @@ def parse_urls_file(path: Path, prefix: str = "",
         tree = ast.parse(path.read_text(encoding="utf-8", errors="replace"))
     except (OSError, SyntaxError):
         return out
-    dprint("django.urls", str(path), "prefix=", prefix)  # [DEBUG] REMOVE in T6
 
     # Collect router registrations first (need ViewSet auth from views index).
     routers: list[tuple[str, str, int]] = []  # (prefix, viewset, lineno)
@@ -304,7 +301,6 @@ def parse_urls_file(path: Path, prefix: str = "",
     for pre, vs, ln in routers:
         auth, perms, _, _ = _auth_for(idx, vs)
         is_vs_class = vs in idx.classes
-        dprint("django.router", pre, vs, auth, perms)  # [DEBUG] REMOVE in T6
         for suffix, methods, _kind in ROUTER_ROUTES:
             out.append(RawEndpoint(path=f"/{pre}{suffix}".replace("//", "/") or "/", methods=methods,
                                    view=vs, file=str(path), line=ln,
@@ -333,5 +329,4 @@ def discover_django(target: Path) -> list[RawEndpoint]:
             # Skip files that are only include targets if a parent already covers them?
             # Simpler: parse all; dedupe happens in inventory.
             out.extend(parse_urls_file(f))
-    dprint("django.done endpoints=", len(out))  # [DEBUG] REMOVE in T6
     return out

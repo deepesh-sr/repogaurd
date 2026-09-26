@@ -6,7 +6,6 @@ Boosts match on finding-ID prefixes so future rules inherit them.
 from __future__ import annotations
 
 from repoguard.models import SEVERITY_ORDER, Finding
-from repoguard.utils.debug import dprint
 
 TOP_N = 12
 
@@ -46,7 +45,6 @@ def _key(f: Finding) -> tuple:
 
 def rank(findings: list[Finding]) -> list[Finding]:
     """Stable sorted copy, fix-first order."""
-    dprint("ranking.rank n=", len(findings))  # [DEBUG] REMOVE in T6
     return sorted(findings, key=_key)
 
 

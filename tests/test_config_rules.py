@@ -10,7 +10,6 @@ from repoguard.scanners.django_flask_config import ConfigAdapter, scan_file  # n
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
-print("[DEBUG:test] T1b config module loaded")  # [DEBUG] println -- REMOVE in T6
 
 
 def _ids(findings):

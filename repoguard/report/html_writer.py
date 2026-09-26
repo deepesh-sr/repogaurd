@@ -10,7 +10,6 @@ from pathlib import Path
 
 from repoguard.models import Report
 from repoguard.ranking import TOP_N
-from repoguard.utils.debug import dprint
 
 _CSS = (
     "body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:2rem;max-width:1000px}"
@@ -33,7 +32,6 @@ def _esc(s: object) -> str:
 
 
 def write_html(report: Report, dest: Path) -> Path:
-    dprint("html_writer.write findings=", len(report.findings))  # [DEBUG] REMOVE in T6
     dest = Path(dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
     counts = report.summary.get("counts", {})

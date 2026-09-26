@@ -18,7 +18,6 @@ from repoguard.scanners.gitleaks import GitleaksAdapter
 from repoguard.scanners.hygiene import HygieneAdapter
 from repoguard.scanners.pip_audit import PipAuditAdapter
 from repoguard.scanners.semgrep import SemgrepAdapter
-from repoguard.utils.debug import dprint
 
 # M1b: config + hygiene appended with no restructuring.
 ADAPTERS = [PipAuditAdapter(), BanditAdapter(), SemgrepAdapter(), GitleaksAdapter(),
@@ -34,7 +33,6 @@ SEV_RANK = {"Critical": 0, "High": 1, "Medium": 2, "Low": 3, "Info": 4}
 
 def _resolve_target(path_str: str) -> Path:
     p = Path(path_str).resolve()
-    dprint("runner.resolve_target", str(p))  # [DEBUG] REMOVE in T6
     if not p.exists():
         raise FileNotFoundError(f"target path does not exist: {path_str}")
     if not p.is_dir():
@@ -44,14 +42,12 @@ def _resolve_target(path_str: str) -> Path:
 
 def _resolve_output(target: Path, output: str | None) -> Path:
     out = Path(output).resolve() if output else (target / "repoguard-report")
-    dprint("runner.resolve_output", str(out))  # [DEBUG] REMOVE in T6
     out.mkdir(parents=True, exist_ok=True)
     return out
 
 
 def _static_phase(target: Path) -> tuple[list[Finding], dict]:
     """Run scanner adapters concurrently. One scanner's failure never fails the run."""
-    dprint("runner.static_phase start target=", str(target))  # [DEBUG] REMOVE in T6
     findings: list[Finding] = []
     scanner_status: dict = {}
     with ThreadPoolExecutor(max_workers=6) as pool:
@@ -63,23 +59,18 @@ def _static_phase(target: Path) -> tuple[list[Finding], dict]:
                         f, status = fut.result()
                     except Exception as e:  # adapter contract says never; belt and suspenders
                         f, status = [], f"error ({e})"
-                    dprint("runner.adapter", adapter.name, status)  # [DEBUG] REMOVE in T6
                     scanner_status[adapter.name] = status
                     findings.extend(f)
-    dprint("runner.static_phase done findings=", len(findings))  # [DEBUG] REMOVE in T6
     return findings, scanner_status
 
 
 def _discovery_phase(target: Path) -> tuple[list, list[Finding]]:
     """M2: AST API discovery -> endpoints + DISC-* findings."""
     from repoguard.discovery.inventory import discover
-    dprint("runner.discovery_phase start")  # [DEBUG] REMOVE in T6
     try:
         endpoints, findings = discover(target)
     except Exception as e:  # never fail the run on discovery errors
-        dprint("runner.discovery error", str(e))  # [DEBUG] REMOVE in T6
         return [], []
-    dprint("runner.discovery done", len(endpoints))  # [DEBUG] REMOVE in T6
     return endpoints, findings
 
 
@@ -88,11 +79,9 @@ def _live_phase(base_url: str, timeout: int, token: str | None,
     """M3: app checks (L1-L4) then API checks (A1-A5) over the inventory."""
     from repoguard.live import api_tests, error_leak, exposed_paths, headers_cookies
     from repoguard.live.http import LiveClient
-    dprint("runner.live_phase start url=", base_url)  # [DEBUG] REMOVE in T6
     client = LiveClient(timeout=timeout, token=token)
     probe = client.request("GET", base_url.rstrip("/") + "/", throttle=False)
     if probe is None:
-        dprint("runner.live unreachable")  # [DEBUG] REMOVE in T6
         return ([Finding(
             id="LIVE-UNREACHABLE",
             title=f"Target application unreachable at {base_url}",
@@ -105,16 +94,16 @@ def _live_phase(base_url: str, timeout: int, token: str | None,
     try:
         l1, _root = headers_cookies.check(base_url, client)
         findings.extend(l1)
-    except Exception as e:
-        dprint("runner.live L1-L2 error", str(e))  # [DEBUG] REMOVE in T6
+    except Exception:
+        pass
     try:
         findings.extend(exposed_paths.check(base_url, client))
-    except Exception as e:
-        dprint("runner.live L3 error", str(e))  # [DEBUG] REMOVE in T6
+    except Exception:
+        pass
     try:
         findings.extend(error_leak.check(base_url, client))
-    except Exception as e:
-        dprint("runner.live L4 error", str(e))  # [DEBUG] REMOVE in T6
+    except Exception:
+        pass
     targets = list(endpoints) if endpoints else []
     if not targets:
         from repoguard.models import Endpoint as _Ep
@@ -124,23 +113,18 @@ def _live_phase(base_url: str, timeout: int, token: str | None,
         api_findings, tested = api_tests.check_api(base_url, client, targets, token2)
         findings.extend(api_findings)
     except Exception as e:
-        dprint("runner.live API error", str(e))  # [DEBUG] REMOVE in T6
         tested = 0
     status = f"ok ({len(findings)} findings, {tested} endpoints tested)"
-    dprint("runner.live done", status)  # [DEBUG] REMOVE in T6
     return findings, status
 
 
 def _exit_code(findings: list[Finding], fail_on: str) -> int:
     if fail_on == "never":
-        dprint("runner.exit_code OK (fail-on=never)")  # [DEBUG] REMOVE in T6
         return EXIT_OK
     threshold = FAIL_ON_RANK[fail_on]
     for f in findings:
         if SEV_RANK.get(f.severity, 99) <= threshold:
-            dprint("runner.exit_code FINDINGS due to", f.id, f.severity)  # [DEBUG] REMOVE in T6
             return EXIT_FINDINGS
-    dprint("runner.exit_code OK")  # [DEBUG] REMOVE in T6
     return EXIT_OK
 
 
@@ -176,11 +160,9 @@ def run_scan(args) -> int:
         endpoints=endpoints,
         scanner_status=scanner_status,
     )
-    dprint("runner.report findings=", len(findings), "endpoints=", len(endpoints))  # [DEBUG] REMOVE in T6
 
     write_json(report, out_dir / "findings.json")
     write_html(report, out_dir / "report.html")
-    dprint("runner.wrote", str(out_dir))  # [DEBUG] REMOVE in T6
 
     code = _exit_code(findings, getattr(args, "fail_on", "critical"))
     print(f"repoguard: {len(findings)} findings, {len(endpoints)} endpoints -> {out_dir} (exit {code})")

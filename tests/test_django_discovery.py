@@ -12,7 +12,6 @@ from repoguard.discovery.permissions import classify, parse_drf_default  # noqa:
 FIXTURES = Path(__file__).parent / "fixtures"
 DJANGO = FIXTURES / "discovery_django"
 
-print("[DEBUG:test] T2 django module loaded")  # [DEBUG] println -- REMOVE in T6
 
 
 def _by_path(endpoints):

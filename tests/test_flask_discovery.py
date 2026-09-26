@@ -11,7 +11,6 @@ from repoguard.discovery.inventory import discover  # noqa: E402
 FIXTURES = Path(__file__).parent / "fixtures"
 FLASK = FIXTURES / "discovery_flask"
 
-print("[DEBUG:test] T2 flask module loaded")  # [DEBUG] println -- REMOVE in T6
 
 
 def test_flask_inventory_exact():

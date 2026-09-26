@@ -10,7 +10,6 @@ from repoguard.discovery.django_parser import RawEndpoint, discover_django
 from repoguard.discovery.flask_parser import discover_flask
 from repoguard.discovery.permissions import classify, parse_drf_default
 from repoguard.models import Endpoint, Finding
-from repoguard.utils.debug import dprint
 from repoguard.utils.owasp import TOOL_DEFAULT_OWASP
 
 OWASP = TOOL_DEFAULT_OWASP["discovery"]
@@ -51,7 +50,6 @@ def discover(target: Path) -> tuple[list[Endpoint], list[Finding]]:
     if not target.exists():
         return [], []
     default = parse_drf_default(target)
-    dprint("inventory.drf_default", default)  # [DEBUG] REMOVE in T6
     raw: list[RawEndpoint] = discover_django(target) + discover_flask(target)
 
     merged: dict[tuple[str, str], RawEndpoint] = {}
@@ -71,10 +69,8 @@ def discover(target: Path) -> tuple[list[Endpoint], list[Finding]]:
         ep = Endpoint(path=path, methods=[method], view=r.view, file=r.file,
                       line=r.line, auth=r.auth, permissions=r.permissions,
                       protection=protection, source=r.source)
-        dprint("inventory.endpoint", method, path, protection)  # [DEBUG] REMOVE in T6
         endpoints.append(ep)
         f = _finding_for(ep)
         if f is not None:
             findings.append(f)
-    dprint("inventory.done endpoints=", len(endpoints), "findings=", len(findings))  # [DEBUG] REMOVE in T6
     return endpoints, findings

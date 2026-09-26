@@ -3,7 +3,6 @@ from __future__ import annotations
 
 from repoguard.live.http import LiveClient, evidence
 from repoguard.models import Finding
-from repoguard.utils.debug import dprint
 from repoguard.utils.owasp import TOOL_DEFAULT_OWASP
 
 OWASP = TOOL_DEFAULT_OWASP["live"]
@@ -23,7 +22,6 @@ HEADER_RULES = [
 
 def check(base_url: str, client: LiveClient):
     """Return (findings, root_resp_or_None)."""
-    dprint("headers.start", base_url)  # [DEBUG] REMOVE in T6
     resp = client.request("GET", base_url.rstrip("/") + "/")
     if resp is None:
         return [], None
@@ -61,5 +59,4 @@ def check(base_url: str, client: LiveClient):
                     owasp=OWASP,
                     fix=f"Set {attr} on the cookie (Django: SESSION_COOKIE_{attr.upper()}=True / response.set_cookie(..., {flag}=True)).",
                     endpoint="/", method="GET"))
-    dprint("headers.done findings=", len(findings))  # [DEBUG] REMOVE in T6
     return findings, resp

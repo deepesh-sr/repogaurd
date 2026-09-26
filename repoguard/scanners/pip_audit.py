@@ -7,7 +7,6 @@ from pathlib import Path
 from repoguard.models import Finding
 from repoguard.scanners.base import ScannerAdapter
 from repoguard.utils import subprocess as proc
-from repoguard.utils.debug import dprint
 from repoguard.utils.owasp import TOOL_DEFAULT_OWASP, cvss_to_severity
 
 
@@ -24,7 +23,6 @@ class PipAuditAdapter(ScannerAdapter):
         return reqs, locked
 
     def run(self, target: Path) -> tuple[list[Finding], str]:
-        dprint("pip_audit.start", str(target))  # [DEBUG] REMOVE in T6
         if not self.is_available():
             return self._unavailable("binary not installed")
         try:
@@ -46,7 +44,6 @@ class PipAuditAdapter(ScannerAdapter):
             except json.JSONDecodeError:
                 return [], f"error (unparseable output, rc={res.returncode})"
             findings = self.parse(data, reqs)
-            dprint("pip_audit.done findings=", len(findings))  # [DEBUG] REMOVE in T6
             # pip-audit rc: 0 = clean, 1 = vulns found OR resolution failure.
             # Zero parsed findings + failure markers on stderr = failed audit,
             # not a clean bill of health.

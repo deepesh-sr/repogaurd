@@ -12,7 +12,6 @@ from repoguard.live import api_tests  # noqa: E402
 from repoguard.live.http import LiveClient  # noqa: E402
 from repoguard.models import Endpoint  # noqa: E402
 
-print("[DEBUG:test] T3b module loaded")  # [DEBUG] println -- REMOVE in T6
 
 BASE = "http://testserver"
 

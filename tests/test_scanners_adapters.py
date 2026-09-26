@@ -22,7 +22,6 @@ from repoguard.utils.owasp import bandit_owasp, cvss_to_severity, semgrep_owasp 
 FIXTURES = Path(__file__).parent / "fixtures"
 VULN = FIXTURES / "vuln_repo"
 
-print("[DEBUG:test] T1a module loaded")  # [DEBUG] println -- REMOVE in T6
 
 
 # --- owasp helpers ---
@@ -80,7 +79,6 @@ def test_pip_audit_resolution_failure_is_error_not_clean(monkeypatch, tmp_path):
     monkeypatch.setattr(pa.proc, "run", fake_run)
     monkeypatch.setattr(PipAuditAdapter, "is_available", lambda self: True)
     findings, status = PipAuditAdapter().run(tmp_path)
-    print("[DEBUG:test] pip-audit failure status=", status)  # [DEBUG] println -- REMOVE in T6
     assert findings == [] and status.startswith("error")
 
 

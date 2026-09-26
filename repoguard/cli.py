@@ -9,7 +9,6 @@ import argparse
 import sys
 
 from repoguard.runner import EXIT_ERROR, run_scan
-from repoguard.utils.debug import dprint
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -35,7 +34,6 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    dprint("cli.main command=", args.command, "path=", args.path, "url=", args.url)  # [DEBUG] REMOVE in T6
     if args.command == "scan":
         if args.verbose:
             import os

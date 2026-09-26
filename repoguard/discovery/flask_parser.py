@@ -9,7 +9,6 @@ import re
 from pathlib import Path
 
 from repoguard.discovery.django_parser import RawEndpoint
-from repoguard.utils.debug import dprint
 from repoguard.utils.files import iter_files
 
 SHORTCUTS = {"get": ["GET"], "post": ["POST"], "put": ["PUT"],
@@ -60,7 +59,6 @@ def parse_flask_file(path: Path) -> list[RawEndpoint]:
     src = path.read_text(encoding="utf-8", errors="replace")
     if "Flask(" not in src and ".route(" not in src and "add_url_rule" not in src:
         return out
-    dprint("flask.file", str(path))  # [DEBUG] REMOVE in T6
 
     prefixes: dict[str, str] = {}  # blueprint var -> url_prefix
     for node in tree.body:
@@ -117,8 +115,6 @@ def parse_flask_file(path: Path) -> list[RawEndpoint]:
                 out.append(RawEndpoint(
                     path=_flask_to_path(rule), methods=_methods_from(call) or ["GET"],
                     view=view, file=str(path), line=node.lineno, source="flask-route"))
-    if out:
-        dprint("flask.done", str(path), len(out))  # [DEBUG] REMOVE in T6
     return out
 
 

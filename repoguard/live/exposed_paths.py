@@ -3,7 +3,6 @@ from __future__ import annotations
 
 from repoguard.live.http import LiveClient, evidence
 from repoguard.models import Finding
-from repoguard.utils.debug import dprint
 from repoguard.utils.owasp import TOOL_DEFAULT_OWASP
 
 OWASP = TOOL_DEFAULT_OWASP["live"]
@@ -25,7 +24,6 @@ VERSION_HEADERS = ("server", "x-powered-by", "x-framework", "x-version")
 
 
 def check(base_url: str, client: LiveClient) -> list[Finding]:
-    dprint("paths.start", base_url)  # [DEBUG] REMOVE in T6
     findings: list[Finding] = []
     base = base_url.rstrip("/")
     root = client.request("GET", base + "/")
@@ -46,7 +44,6 @@ def check(base_url: str, client: LiveClient) -> list[Finding]:
             continue
         low = resp.body.lower()
         if any(s in low for s in sigs):
-            dprint("paths.exposed", path)  # [DEBUG] REMOVE in T6
             findings.append(Finding(
                 id=f"LIVE-EXPOSED-{path.strip('/').upper().replace('/', '_').replace('.', '_') or 'ROOT'}",
                 title=title, severity=severity, tool="live",
@@ -54,5 +51,4 @@ def check(base_url: str, client: LiveClient) -> list[Finding]:
                 owasp=OWASP,
                 fix=f"Block {path} at the web server / WSGI layer; require auth; never deploy .env/.git.",
                 endpoint=path, method="GET"))
-    dprint("paths.done findings=", len(findings))  # [DEBUG] REMOVE in T6
     return findings

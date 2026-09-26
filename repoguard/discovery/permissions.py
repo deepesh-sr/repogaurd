@@ -7,7 +7,6 @@ from __future__ import annotations
 import ast
 from pathlib import Path
 
-from repoguard.utils.debug import dprint
 from repoguard.utils.files import iter_files
 
 # Decorators that prove a view requires authentication.
@@ -101,7 +100,6 @@ def parse_drf_default(target: Path) -> str | None:
                     isinstance(t, ast.Name) and t.id == "REST_FRAMEWORK" for t in node.targets):
                 blob = ast.dump(node.value)
                 if "AllowAny" in blob:
-                    dprint("permissions.drf_default AllowAny in", str(f))  # [DEBUG] REMOVE in T6
                     return "AllowAny"
                 for cls in sorted(PROTECTED_PERMISSIONS):
                     if cls in blob:

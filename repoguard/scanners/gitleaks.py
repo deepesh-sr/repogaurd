@@ -8,7 +8,6 @@ from pathlib import Path
 from repoguard.models import Finding
 from repoguard.scanners.base import ScannerAdapter
 from repoguard.utils import subprocess as proc
-from repoguard.utils.debug import dprint
 from repoguard.utils.owasp import TOOL_DEFAULT_OWASP
 
 CRITICAL_RULES = {"aws-access-token", "aws-secret-key", "github-pat", "private-key",
@@ -23,7 +22,6 @@ class GitleaksAdapter(ScannerAdapter):
         return "gitleaks"
 
     def run(self, target: Path) -> tuple[list[Finding], str]:
-        dprint("gitleaks.start", str(target))  # [DEBUG] REMOVE in T6
         if not self.is_available():
             return self._unavailable("binary not installed")
         try:
@@ -53,7 +51,6 @@ class GitleaksAdapter(ScannerAdapter):
             findings = self.parse(data if isinstance(data, list) else [])
             if shallow:
                 findings.append(self._shallow_note())
-            dprint("gitleaks.done findings=", len(findings))  # [DEBUG] REMOVE in T6
             status = f"ok ({len(findings)} findings)"
             if shallow:
                 status += " [shallow clone: history incomplete]"

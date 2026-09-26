@@ -13,7 +13,6 @@ from pathlib import Path
 
 from repoguard.models import Finding
 from repoguard.scanners.base import ScannerAdapter
-from repoguard.utils.debug import dprint
 from repoguard.utils.files import iter_files
 from repoguard.utils.owasp import TOOL_DEFAULT_OWASP
 
@@ -32,7 +31,10 @@ def scan_tree(target: Path, rules: dict | None = None) -> list[Finding]:
               for r in rules.get("content_sniffs", [])]
     compiled = [(re.compile(p), k, s) for p, k, s in sniffs]
     findings: list[Finding] = []
+    own_rules = RULES_FILE.resolve()
     for f in iter_files(target):
+        if f.resolve() == own_rules:
+            continue  # scanner config, never a target
         name = f.name
         hit = next((g for g in globs if fnmatch.fnmatch(name, g["glob"])), None)
         sniff_kind = sniff_sev = None
@@ -52,7 +54,6 @@ def scan_tree(target: Path, rules: dict | None = None) -> list[Finding]:
         kind = sniff_kind or hit["kind"]
         severity = sniff_sev or hit.get("severity", "Medium")
         rel = str(f.relative_to(target))
-        dprint("hygiene.flag", rel, kind)  # [DEBUG] REMOVE in T6
         findings.append(Finding(
             id=f"HYG-{kind.upper().replace('-', '_')}-COMMITTED",
             title=f"Committed {kind} file: {rel}",
@@ -79,12 +80,10 @@ class HygieneAdapter(ScannerAdapter):
         return True
 
     def run(self, target: Path) -> tuple[list[Finding], str]:
-        dprint("hygiene.start", str(target))  # [DEBUG] REMOVE in T6
         if not Path(target).exists():
             return [], f"error (target not found: {target})"
         try:
             findings = scan_tree(target)
-            dprint("hygiene.done findings=", len(findings))  # [DEBUG] REMOVE in T6
             return findings, f"ok ({len(findings)} findings)"
         except Exception as e:  # never raise
             return [], f"error ({e})"
