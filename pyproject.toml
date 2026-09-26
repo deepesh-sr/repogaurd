@@ -1,0 +1,28 @@
+[project]
+name = "repoguard"
+version = "0.1.0"
+description = "Repository VAPT tool: static assessment + API discovery + live app/API testing, one ranked HTML+JSON report."
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.31",
+]
+readme = "README.md"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "requests-mock>=1.11",
+]
+
+[project.scripts]
+repoguard = "repoguard.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["repoguard*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

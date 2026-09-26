@@ -1,0 +1,3 @@
+# Intentionally vulnerable pins for T1a pip-audit tests (never install).
+django==3.2.0
+urllib3==1.26.5

@@ -1,0 +1,211 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>RepoGuard report — /private/tmp/drf-sample</title>
+<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:2rem;max-width:1000px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;font-size:.9rem}.badge{display:inline-block;padding:.1rem .5rem;border-radius:999px;font-size:.75rem;font-weight:700}.Critical{background:#7f1d1d;color:#fff}.High{background:#c2410c;color:#fff}.Medium{background:#a16207;color:#fff}.Low{background:#1d4ed8;color:#fff}.Info{background:#475569;color:#fff}.protected{background:#166534;color:#fff}.open{background:#7f1d1d;color:#fff}.allowany-default{background:#a16207;color:#fff}.unknown{background:#475569;color:#fff}pre{background:#f1f5f9;padding:.6rem;overflow:auto;font-size:.8rem}code{background:#f1f5f9;padding:.1rem .3rem}.fixfirst{background:#fffbeb;border:1px solid #f59e0b;padding:.6rem 1rem}details{margin:.4rem 0}summary{cursor:pointer;font-weight:600}</style>
+<h1>RepoGuard report</h1>
+<p>Target: <code>/private/tmp/drf-sample</code><br>
+Generated: 2026-09-26T17:22:50.213554+00:00<br>
+Base URL: http://localhost:8124<br>
+Scanner status: {&#x27;pip-audit&#x27;: &#x27;skipped (no requirements*.txt / poetry.lock / Pipfile.lock)&#x27;, &#x27;bandit&#x27;: &#x27;ok (2 findings)&#x27;, &#x27;semgrep&#x27;: &#x27;missing (binary not installed)&#x27;, &#x27;gitleaks&#x27;: &#x27;missing (binary not installed)&#x27;, &#x27;config&#x27;: &#x27;ok (5 findings)&#x27;, &#x27;hygiene&#x27;: &#x27;ok (0 findings)&#x27;, &#x27;discovery&#x27;: &#x27;ok (3 endpoints)&#x27;, &#x27;live&#x27;: &#x27;ok (7 findings, 3 endpoints tested)&#x27;}</p>
+<h2>Summary</h2>
+<table><tr><th>Critical</th><th>High</th><th>Medium</th><th>Low</th><th>Info</th><th>Total</th></tr>
+<tr><td>1</td><td>4</td>
+<td>2</td><td>8</td>
+<td>0</td><td>15</td></tr></table>
+<h2>Fix first (12 of 15)</h2>
+<div class='fixfirst'><ol><li><b>#1</b> <span class='badge Critical'>Critical</span> <a href='#f-1'>Unauthenticated access returns data: GET /api/notes/</a> <small>API-UNAUTH-EXPOSURE · GET http://localhost:8124/api/notes/</small><br>Fix: <code>Require authentication on views.PublicNotes (permission_classes=[IsAuthenticated] / @login_required). Authenticated control call also succeeded, so the route is live.</code></li><li><b>#2</b> <span class='badge High'>High</span> <a href='#f-2'>DEBUG=True in Django settings</a> <small>CFG-01 · /private/tmp/drf-sample/settings.py:6</small><br>Fix: <code>Set DEBUG=False in production (env-gated: DEBUG = os.environ.get(&#x27;DEBUG&#x27;) == &#x27;1&#x27;).</code></li><li><b>#3</b> <span class='badge High'>High</span> <a href='#f-3'>Hardcoded Django SECRET_KEY</a> <small>CFG-03 · /private/tmp/drf-sample/settings.py:7</small><br>Fix: <code>Load from env/secret manager (SECRET_KEY = os.environ[&#x27;SECRET_KEY&#x27;]); rotate the exposed value.</code></li><li><b>#4</b> <span class='badge High'>High</span> <a href='#f-4'>Endpoint with no authentication: GET /api/notes/</a> <small>DISC-OPEN-ENDPOINT · /private/tmp/drf-sample/urls.py:7</small><br>Fix: <code>Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).</code></li><li><b>#5</b> <span class='badge High'>High</span> <a href='#f-5'>ALLOWED_HOSTS allows &#x27;*&#x27; (any host)</a> <small>CFG-02 · /private/tmp/drf-sample/settings.py:8</small><br>Fix: <code>List explicit hostnames, e.g. ALLOWED_HOSTS = [&#x27;example.com&#x27;].</code></li><li><b>#6</b> <span class='badge Medium'>Medium</span> <a href='#f-6'>hardcoded_tmp_directory [B108]</a> <small>BANDIT-B108 · /private/tmp/drf-sample/settings.py:13</small><br>Fix: <code>Review flagged construct against bandit docs; apply safe alternative and re-scan.</code></li><li><b>#7</b> <span class='badge Medium'>Medium</span> <a href='#f-7'>Missing Content-Security-Policy header</a> <small>LIVE-HDR-CONTENT_SECURITY_POLICY · GET http://localhost:8124</small><br>Fix: <code>Add a CSP header, e.g. Content-Security-Policy: default-src &#x27;self&#x27;.</code></li><li><b>#8</b> <span class='badge Low'>Low</span> <a href='#f-8'>No rate limiting observed (20 rapid requests, all accepted)</a> <small>API-NO-RATELIMIT · GET http://localhost:8124/</small><br>Fix: <code>Add throttling (DRF DEFAULT_THROTTLE_CLASSES / django-ratelimit / reverse-proxy limit_req).</code></li><li><b>#9</b> <span class='badge Low'>Low</span> <a href='#f-9'>SESSION_COOKIE_SECURE not set (defaults to False)</a> <small>CFG-06 · /private/tmp/drf-sample/settings.py:1</small><br>Fix: <code>Set SESSION_COOKIE_SECURE = True in production.</code></li><li><b>#10</b> <span class='badge Low'>Low</span> <a href='#f-10'>CSRF_COOKIE_SECURE not set (defaults to False)</a> <small>CFG-06 · /private/tmp/drf-sample/settings.py:1</small><br>Fix: <code>Set CSRF_COOKIE_SECURE = True in production.</code></li><li><b>#11</b> <span class='badge Low'>Low</span> <a href='#f-11'>hardcoded_password_string [B105]</a> <small>BANDIT-B105 · /private/tmp/drf-sample/settings.py:7</small><br>Fix: <code>Move secret to env var; fail closed if unset.</code></li><li><b>#12</b> <span class='badge Low'>Low</span> <a href='#f-12'>Missing HSTS header</a> <small>LIVE-HDR-STRICT_TRANSPORT_SECURITY · GET http://localhost:8124</small><br>Fix: <code>Serve over HTTPS, then add Strict-Transport-Security: max-age=31536000; includeSubDomains (serve over HTTPS).</code></li></ol></div>
+<h2>Endpoint inventory (3)</h2>
+<table><tr><th>Methods</th><th>Path</th><th>View</th><th>Auth</th><th>Protection</th></tr>
+<tr><td>GET</td><td>/api/notes/</td><td>views.PublicNotes</td><td></td><td><span class='badge open'>open</span></td></tr><tr><td>POST</td><td>/api/notes/create/</td><td>views.CreateNote</td><td></td><td><span class='badge protected'>protected</span></td></tr><tr><td>GET</td><td>/api/profile/</td><td>views.MyProfile</td><td></td><td><span class='badge protected'>protected</span></td></tr></table>
+<h2>Findings (15)</h2>
+<table><tr><th>Severity</th><th>ID</th><th>Title</th><th>Where</th><th>Tool</th><th>OWASP</th></tr>
+<tr><td>Critical</td><td>API-UNAUTH-EXPOSURE</td><td>Unauthenticated access returns data: GET /api/notes/</td><td>GET http://localhost:8124/api/notes/</td><td>api</td><td>A01:2021 — Broken Access Control</td></tr><tr><td>High</td><td>CFG-01</td><td>DEBUG=True in Django settings</td><td>/private/tmp/drf-sample/settings.py:6</td><td>config</td><td>A05:2021 — Security Misconfiguration</td></tr><tr><td>High</td><td>CFG-03</td><td>Hardcoded Django SECRET_KEY</td><td>/private/tmp/drf-sample/settings.py:7</td><td>config</td><td>A05:2021 — Security Misconfiguration</td></tr><tr><td>High</td><td>DISC-OPEN-ENDPOINT</td><td>Endpoint with no authentication: GET /api/notes/</td><td>/private/tmp/drf-sample/urls.py:7</td><td>discovery</td><td>A01:2021 — Broken Access Control</td></tr><tr><td>High</td><td>CFG-02</td><td>ALLOWED_HOSTS allows &#x27;*&#x27; (any host)</td><td>/private/tmp/drf-sample/settings.py:8</td><td>config</td><td>A05:2021 — Security Misconfiguration</td></tr><tr><td>Medium</td><td>BANDIT-B108</td><td>hardcoded_tmp_directory [B108]</td><td>/private/tmp/drf-sample/settings.py:13</td><td>bandit</td><td>A05:2021 — Security Misconfiguration</td></tr><tr><td>Medium</td><td>LIVE-HDR-CONTENT_SECURITY_POLICY</td><td>Missing Content-Security-Policy header</td><td>GET http://localhost:8124</td><td>live</td><td>A05:2021 — Security Misconfiguration</td></tr><tr><td>Low</td><td>API-NO-RATELIMIT</td><td>No rate limiting observed (20 rapid requests, all accepted)</td><td>GET http://localhost:8124/</td><td>api</td><td>A01:2021 — Broken Access Control</td></tr><tr><td>Low</td><td>CFG-06</td><td>SESSION_COOKIE_SECURE not set (defaults to False)</td><td>/private/tmp/drf-sample/settings.py:1</td><td>config</td><td>A05:2021 — Security Misconfiguration</td></tr><tr><td>Low</td><td>CFG-06</td><td>CSRF_COOKIE_SECURE not set (defaults to False)</td><td>/private/tmp/drf-sample/settings.py:1</td><td>config</td><td>A05:2021 — Security Misconfiguration</td></tr><tr><td>Low</td><td>BANDIT-B105</td><td>hardcoded_password_string [B105]</td><td>/private/tmp/drf-sample/settings.py:7</td><td>bandit</td><td>A07:2021 — Identification and Authentication Failures</td></tr><tr><td>Low</td><td>LIVE-HDR-STRICT_TRANSPORT_SECURITY</td><td>Missing HSTS header</td><td>GET http://localhost:8124</td><td>live</td><td>A05:2021 — Security Misconfiguration</td></tr><tr><td>Low</td><td>LIVE-HDR-X_CONTENT_TYPE_OPTIONS</td><td>Missing X-Content-Type-Options header</td><td>GET http://localhost:8124</td><td>live</td><td>A05:2021 — Security Misconfiguration</td></tr><tr><td>Low</td><td>LIVE-HDR-X_FRAME_OPTIONS</td><td>Missing X-Frame-Options header</td><td>GET http://localhost:8124</td><td>live</td><td>A05:2021 — Security Misconfiguration</td></tr><tr><td>Low</td><td>LIVE-VERSION</td><td>Server/framework version disclosed (Server: WSGIServer/0.2 CPython/3.14.2)</td><td>GET http://localhost:8124/</td><td>live</td><td>A05:2021 — Security Misconfiguration</td></tr></table>
+<details open><summary><span class='badge Critical'>Critical</span> Unauthenticated access returns data: GET /api/notes/ <small>API-UNAUTH-EXPOSURE</small></summary><section id='f-1'><p><b>Where:</b> <code>GET http://localhost:8124/api/notes/</code> &nbsp; <b>Tool:</b> api &nbsp; <b>OWASP:</b> A01:2021 — Broken Access Control</p><pre>REQUEST: GET http://localhost:8124/api/notes/ -&gt; RESPONSE: 200 [{&quot;id&quot;:1,&quot;note&quot;:&quot;public note data here&quot;}]</pre><p><b>Fix:</b> <code>Require authentication on views.PublicNotes (permission_classes=[IsAuthenticated] / @login_required). Authenticated control call also succeeded, so the route is live.</code></p></section></details><details open><summary><span class='badge High'>High</span> DEBUG=True in Django settings <small>CFG-01</small></summary><section id='f-2'><p><b>Where:</b> <code>/private/tmp/drf-sample/settings.py:6</code> &nbsp; <b>Tool:</b> config &nbsp; <b>OWASP:</b> A05:2021 — Security Misconfiguration</p><pre>DEBUG = True  # CFG-01 (deliberate)</pre><p><b>Fix:</b> <code>Set DEBUG=False in production (env-gated: DEBUG = os.environ.get(&#x27;DEBUG&#x27;) == &#x27;1&#x27;).</code></p></section></details><details open><summary><span class='badge High'>High</span> Hardcoded Django SECRET_KEY <small>CFG-03</small></summary><section id='f-3'><p><b>Where:</b> <code>/private/tmp/drf-sample/settings.py:7</code> &nbsp; <b>Tool:</b> config &nbsp; <b>OWASP:</b> A05:2021 — Security Misconfiguration</p><pre>SECRET_KEY = &lt;39-char literal&gt;  (value withheld)</pre><p><b>Fix:</b> <code>Load from env/secret manager (SECRET_KEY = os.environ[&#x27;SECRET_KEY&#x27;]); rotate the exposed value.</code></p></section></details><details open><summary><span class='badge High'>High</span> Endpoint with no authentication: GET /api/notes/ <small>DISC-OPEN-ENDPOINT</small></summary><section id='f-4'><p><b>Where:</b> <code>/private/tmp/drf-sample/urls.py:7</code> &nbsp; <b>Tool:</b> discovery &nbsp; <b>OWASP:</b> A01:2021 — Broken Access Control</p><pre>GET /api/notes/ -&gt; views.PublicNotes (no auth/permission classes, no @login_required).</pre><p><b>Fix:</b> <code>Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).</code></p></section></details><details open><summary><span class='badge High'>High</span> ALLOWED_HOSTS allows &#x27;*&#x27; (any host) <small>CFG-02</small></summary><section id='f-5'><p><b>Where:</b> <code>/private/tmp/drf-sample/settings.py:8</code> &nbsp; <b>Tool:</b> config &nbsp; <b>OWASP:</b> A05:2021 — Security Misconfiguration</p><pre>ALLOWED_HOSTS = [&quot;*&quot;]  # CFG-02 (deliberate)</pre><p><b>Fix:</b> <code>List explicit hostnames, e.g. ALLOWED_HOSTS = [&#x27;example.com&#x27;].</code></p></section></details><details><summary><span class='badge Medium'>Medium</span> hardcoded_tmp_directory [B108] <small>BANDIT-B108</small></summary><section id='f-6'><p><b>Where:</b> <code>/private/tmp/drf-sample/settings.py:13</code> &nbsp; <b>Tool:</b> bandit &nbsp; <b>OWASP:</b> A05:2021 — Security Misconfiguration</p><pre>12 DATABASES = {&quot;default&quot;: {&quot;ENGINE&quot;: &quot;django.db.backends.sqlite3&quot;,
+13                          &quot;NAME&quot;: &quot;/tmp/drf-sample-db.sqlite3&quot;}}
+14 INSTALLED_APPS = [
+15     &quot;django.contrib.auth&quot;,
+</pre><p><b>Fix:</b> <code>Review flagged construct against bandit docs; apply safe alternative and re-scan.</code></p></section></details><details><summary><span class='badge Medium'>Medium</span> Missing Content-Security-Policy header <small>LIVE-HDR-CONTENT_SECURITY_POLICY</small></summary><section id='f-7'><p><b>Where:</b> <code>GET http://localhost:8124</code> &nbsp; <b>Tool:</b> live &nbsp; <b>OWASP:</b> A05:2021 — Security Misconfiguration</p><pre>REQUEST: GET http://localhost:8124/ -&gt; RESPONSE: 404 &lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+  &lt;title&gt;Page not found at /&lt;/title&gt;
+  &lt;meta name=&quot;robots&quot; content=&quot;NONE,NOARCHIVE&quot;&gt;
+  &lt;style&gt;
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font-family: sans-serif; background:#eee; color:#000; }
+    body &gt; :where(header, main, footer) { border-bottom:1px solid #ddd; }
+    h1 { font-weight:normal; margin-bottom:.4em; }
+    h1 small { font-size:60%; color:#666; font-weight:normal; }
+    table { border:none; border-collapse: collapse; width:100%; }
+    td, th { vertical-align:top; padding:2px 3px; }
+    th { width:12em; text-align:right; color:#666; padding-right:.5em; }
+    #info { background:#f6f6f6; }
+    #info ol { margin: 0.5em 4em; }
+    #info ol li { font-family: monospace; }
+    #summary { background: #ffc; }
+    #explanation { background:#eee; border-bottom: 0px none; }
+    pre.exception_value { font-family: sans-serif; color: #575757; font-size: 1.5em; margin: 10px 0 10px 0; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header id=&quot;summary&quot;&gt;
+    &lt;h1&gt;Page not found &lt;small&gt;(404)&lt;/small&gt;&lt;/h1&gt;
+    
+    &lt;table class=&quot;meta&quot;&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;Request Method:&lt;/th&gt;
+        &lt;td&gt;GET&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;Request URL:&lt;/th&gt;
+        &lt;td&gt;http://localhost:8124/&lt;/td&gt;
+      &lt;/tr&gt;
+      
+    &lt;/table&gt;
+  &lt;/header&gt;
+
+  &lt;main id=&quot;info&quot;&gt;
+    
+      &lt;p&gt;
+      Using the URLconf defined in &lt;co</pre><p><b>Fix:</b> <code>Add a CSP header, e.g. Content-Security-Policy: default-src &#x27;self&#x27;.</code></p></section></details><details><summary><span class='badge Low'>Low</span> No rate limiting observed (20 rapid requests, all accepted) <small>API-NO-RATELIMIT</small></summary><section id='f-8'><p><b>Where:</b> <code>GET http://localhost:8124/</code> &nbsp; <b>Tool:</b> api &nbsp; <b>OWASP:</b> A01:2021 — Broken Access Control</p><pre>20x GET / in burst: all 200, no 429, no Retry-After/X-RateLimit headers.</pre><p><b>Fix:</b> <code>Add throttling (DRF DEFAULT_THROTTLE_CLASSES / django-ratelimit / reverse-proxy limit_req).</code></p></section></details><details><summary><span class='badge Low'>Low</span> SESSION_COOKIE_SECURE not set (defaults to False) <small>CFG-06</small></summary><section id='f-9'><p><b>Where:</b> <code>/private/tmp/drf-sample/settings.py:1</code> &nbsp; <b>Tool:</b> config &nbsp; <b>OWASP:</b> A05:2021 — Security Misconfiguration</p><pre>SESSION_COOKIE_SECURE absent; Django default sends cookies over HTTP.</pre><p><b>Fix:</b> <code>Set SESSION_COOKIE_SECURE = True in production.</code></p></section></details><details><summary><span class='badge Low'>Low</span> CSRF_COOKIE_SECURE not set (defaults to False) <small>CFG-06</small></summary><section id='f-10'><p><b>Where:</b> <code>/private/tmp/drf-sample/settings.py:1</code> &nbsp; <b>Tool:</b> config &nbsp; <b>OWASP:</b> A05:2021 — Security Misconfiguration</p><pre>CSRF_COOKIE_SECURE absent; Django default sends cookies over HTTP.</pre><p><b>Fix:</b> <code>Set CSRF_COOKIE_SECURE = True in production.</code></p></section></details><details><summary><span class='badge Low'>Low</span> hardcoded_password_string [B105] <small>BANDIT-B105</small></summary><section id='f-11'><p><b>Where:</b> <code>/private/tmp/drf-sample/settings.py:7</code> &nbsp; <b>Tool:</b> bandit &nbsp; <b>OWASP:</b> A07:2021 — Identification and Authentication Failures</p><pre>6 DEBUG = True  # CFG-01 (deliberate)
+7 SECRET_KEY = &quot;drf-sample-hardcoded-key-for-proof-only&quot;  # CFG-03 (deliberate)
+8 ALLOWED_HOSTS = [&quot;*&quot;]  # CFG-02 (deliberate)
+</pre><p><b>Fix:</b> <code>Move secret to env var; fail closed if unset.</code></p></section></details><details><summary><span class='badge Low'>Low</span> Missing HSTS header <small>LIVE-HDR-STRICT_TRANSPORT_SECURITY</small></summary><section id='f-12'><p><b>Where:</b> <code>GET http://localhost:8124</code> &nbsp; <b>Tool:</b> live &nbsp; <b>OWASP:</b> A05:2021 — Security Misconfiguration</p><pre>REQUEST: GET http://localhost:8124/ -&gt; RESPONSE: 404 &lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+  &lt;title&gt;Page not found at /&lt;/title&gt;
+  &lt;meta name=&quot;robots&quot; content=&quot;NONE,NOARCHIVE&quot;&gt;
+  &lt;style&gt;
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font-family: sans-serif; background:#eee; color:#000; }
+    body &gt; :where(header, main, footer) { border-bottom:1px solid #ddd; }
+    h1 { font-weight:normal; margin-bottom:.4em; }
+    h1 small { font-size:60%; color:#666; font-weight:normal; }
+    table { border:none; border-collapse: collapse; width:100%; }
+    td, th { vertical-align:top; padding:2px 3px; }
+    th { width:12em; text-align:right; color:#666; padding-right:.5em; }
+    #info { background:#f6f6f6; }
+    #info ol { margin: 0.5em 4em; }
+    #info ol li { font-family: monospace; }
+    #summary { background: #ffc; }
+    #explanation { background:#eee; border-bottom: 0px none; }
+    pre.exception_value { font-family: sans-serif; color: #575757; font-size: 1.5em; margin: 10px 0 10px 0; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header id=&quot;summary&quot;&gt;
+    &lt;h1&gt;Page not found &lt;small&gt;(404)&lt;/small&gt;&lt;/h1&gt;
+    
+    &lt;table class=&quot;meta&quot;&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;Request Method:&lt;/th&gt;
+        &lt;td&gt;GET&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;Request URL:&lt;/th&gt;
+        &lt;td&gt;http://localhost:8124/&lt;/td&gt;
+      &lt;/tr&gt;
+      
+    &lt;/table&gt;
+  &lt;/header&gt;
+
+  &lt;main id=&quot;info&quot;&gt;
+    
+      &lt;p&gt;
+      Using the URLconf defined in &lt;co</pre><p><b>Fix:</b> <code>Serve over HTTPS, then add Strict-Transport-Security: max-age=31536000; includeSubDomains (serve over HTTPS).</code></p></section></details><details><summary><span class='badge Low'>Low</span> Missing X-Content-Type-Options header <small>LIVE-HDR-X_CONTENT_TYPE_OPTIONS</small></summary><section id='f-13'><p><b>Where:</b> <code>GET http://localhost:8124</code> &nbsp; <b>Tool:</b> live &nbsp; <b>OWASP:</b> A05:2021 — Security Misconfiguration</p><pre>REQUEST: GET http://localhost:8124/ -&gt; RESPONSE: 404 &lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+  &lt;title&gt;Page not found at /&lt;/title&gt;
+  &lt;meta name=&quot;robots&quot; content=&quot;NONE,NOARCHIVE&quot;&gt;
+  &lt;style&gt;
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font-family: sans-serif; background:#eee; color:#000; }
+    body &gt; :where(header, main, footer) { border-bottom:1px solid #ddd; }
+    h1 { font-weight:normal; margin-bottom:.4em; }
+    h1 small { font-size:60%; color:#666; font-weight:normal; }
+    table { border:none; border-collapse: collapse; width:100%; }
+    td, th { vertical-align:top; padding:2px 3px; }
+    th { width:12em; text-align:right; color:#666; padding-right:.5em; }
+    #info { background:#f6f6f6; }
+    #info ol { margin: 0.5em 4em; }
+    #info ol li { font-family: monospace; }
+    #summary { background: #ffc; }
+    #explanation { background:#eee; border-bottom: 0px none; }
+    pre.exception_value { font-family: sans-serif; color: #575757; font-size: 1.5em; margin: 10px 0 10px 0; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header id=&quot;summary&quot;&gt;
+    &lt;h1&gt;Page not found &lt;small&gt;(404)&lt;/small&gt;&lt;/h1&gt;
+    
+    &lt;table class=&quot;meta&quot;&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;Request Method:&lt;/th&gt;
+        &lt;td&gt;GET&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;Request URL:&lt;/th&gt;
+        &lt;td&gt;http://localhost:8124/&lt;/td&gt;
+      &lt;/tr&gt;
+      
+    &lt;/table&gt;
+  &lt;/header&gt;
+
+  &lt;main id=&quot;info&quot;&gt;
+    
+      &lt;p&gt;
+      Using the URLconf defined in &lt;co</pre><p><b>Fix:</b> <code>Add X-Content-Type-Options: nosniff.</code></p></section></details><details><summary><span class='badge Low'>Low</span> Missing X-Frame-Options header <small>LIVE-HDR-X_FRAME_OPTIONS</small></summary><section id='f-14'><p><b>Where:</b> <code>GET http://localhost:8124</code> &nbsp; <b>Tool:</b> live &nbsp; <b>OWASP:</b> A05:2021 — Security Misconfiguration</p><pre>REQUEST: GET http://localhost:8124/ -&gt; RESPONSE: 404 &lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+  &lt;title&gt;Page not found at /&lt;/title&gt;
+  &lt;meta name=&quot;robots&quot; content=&quot;NONE,NOARCHIVE&quot;&gt;
+  &lt;style&gt;
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font-family: sans-serif; background:#eee; color:#000; }
+    body &gt; :where(header, main, footer) { border-bottom:1px solid #ddd; }
+    h1 { font-weight:normal; margin-bottom:.4em; }
+    h1 small { font-size:60%; color:#666; font-weight:normal; }
+    table { border:none; border-collapse: collapse; width:100%; }
+    td, th { vertical-align:top; padding:2px 3px; }
+    th { width:12em; text-align:right; color:#666; padding-right:.5em; }
+    #info { background:#f6f6f6; }
+    #info ol { margin: 0.5em 4em; }
+    #info ol li { font-family: monospace; }
+    #summary { background: #ffc; }
+    #explanation { background:#eee; border-bottom: 0px none; }
+    pre.exception_value { font-family: sans-serif; color: #575757; font-size: 1.5em; margin: 10px 0 10px 0; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header id=&quot;summary&quot;&gt;
+    &lt;h1&gt;Page not found &lt;small&gt;(404)&lt;/small&gt;&lt;/h1&gt;
+    
+    &lt;table class=&quot;meta&quot;&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;Request Method:&lt;/th&gt;
+        &lt;td&gt;GET&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;th scope=&quot;row&quot;&gt;Request URL:&lt;/th&gt;
+        &lt;td&gt;http://localhost:8124/&lt;/td&gt;
+      &lt;/tr&gt;
+      
+    &lt;/table&gt;
+  &lt;/header&gt;
+
+  &lt;main id=&quot;info&quot;&gt;
+    
+      &lt;p&gt;
+      Using the URLconf defined in &lt;co</pre><p><b>Fix:</b> <code>Add X-Frame-Options: DENY (or SAMEORIGIN) to block clickjacking.</code></p></section></details><details><summary><span class='badge Low'>Low</span> Server/framework version disclosed (Server: WSGIServer/0.2 CPython/3.14.2) <small>LIVE-VERSION</small></summary><section id='f-15'><p><b>Where:</b> <code>GET http://localhost:8124/</code> &nbsp; <b>Tool:</b> live &nbsp; <b>OWASP:</b> A05:2021 — Security Misconfiguration</p><pre>Server: WSGIServer/0.2 CPython/3.14.2</pre><p><b>Fix:</b> <code>Suppress version banners (e.g. server_tokens off; remove X-Powered-By).</code></p></section></details>
+<footer><p>Schema v1 · offline single file · ranked fix-first.</p></footer>

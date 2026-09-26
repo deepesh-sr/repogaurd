@@ -1,0 +1,3897 @@
+{
+  "target": "/private/tmp/pygoat",
+  "base_url": null,
+  "generated_at": "2026-09-26T17:13:17.566324+00:00",
+  "summary": {
+    "counts": {
+      "Critical": 0,
+      "High": 81,
+      "Medium": 15,
+      "Low": 38,
+      "Info": 0
+    },
+    "total": 134,
+    "fix_first": [
+      "CFG-03",
+      "CFG-01",
+      "CFG-03",
+      "CFG-01",
+      "DISC-OPEN-ENDPOINT",
+      "DISC-OPEN-ENDPOINT",
+      "DISC-OPEN-ENDPOINT",
+      "DISC-OPEN-ENDPOINT",
+      "DISC-OPEN-ENDPOINT",
+      "DISC-OPEN-ENDPOINT",
+      "DISC-OPEN-ENDPOINT",
+      "DISC-OPEN-ENDPOINT"
+    ]
+  },
+  "findings": [
+    {
+      "id": "CFG-03",
+      "title": "Hardcoded Django SECRET_KEY",
+      "severity": "High",
+      "tool": "config",
+      "where": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/sensitive_data_lab/settings.py:8",
+      "evidence": "SECRET_KEY = <42-char literal>  (value withheld)",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Load from env/secret manager (SECRET_KEY = os.environ['SECRET_KEY']); rotate the exposed value.",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/sensitive_data_lab/settings.py",
+      "line": 8,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "CFG-01",
+      "title": "DEBUG=True in Django settings",
+      "severity": "High",
+      "tool": "config",
+      "where": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/sensitive_data_lab/settings.py:11",
+      "evidence": "DEBUG = True",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Set DEBUG=False in production (env-gated: DEBUG = os.environ.get('DEBUG') == '1').",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/sensitive_data_lab/settings.py",
+      "line": 11,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "CFG-03",
+      "title": "Hardcoded Django SECRET_KEY",
+      "severity": "High",
+      "tool": "config",
+      "where": "/private/tmp/pygoat/pygoat/settings.py:25",
+      "evidence": "SECRET_KEY = <50-char literal>  (value withheld)",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Load from env/secret manager (SECRET_KEY = os.environ['SECRET_KEY']); rotate the exposed value.",
+      "file": "/private/tmp/pygoat/pygoat/settings.py",
+      "line": 25,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "CFG-01",
+      "title": "DEBUG=True in Django settings",
+      "severity": "High",
+      "tool": "config",
+      "where": "/private/tmp/pygoat/pygoat/settings.py:30",
+      "evidence": "DEBUG = True",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Set DEBUG=False in production (env-gated: DEBUG = os.environ.get('DEBUG') == '1').",
+      "file": "/private/tmp/pygoat/pygoat/settings.py",
+      "line": 30,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /{challenge}",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/challenge/urls.py:5",
+      "evidence": "GET /{challenge} -> DoItFast (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/challenge/urls.py",
+      "line": 5,
+      "endpoint": "/{challenge}",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:32",
+      "evidence": "GET /lab -> lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 32,
+      "endpoint": "/lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: POST /login",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:36",
+      "evidence": "POST /login -> login (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 36,
+      "endpoint": "/login",
+      "method": "POST",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: POST /register",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:59",
+      "evidence": "POST /register -> register (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 59,
+      "endpoint": "/register",
+      "method": "POST",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: POST /reset-password",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:79",
+      "evidence": "POST /reset-password -> reset_password (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 79,
+      "endpoint": "/reset-password",
+      "method": "POST",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /reset/{token}",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:98",
+      "evidence": "GET /reset/{token} -> reset_form (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 98,
+      "endpoint": "/reset/{token}",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /dashboard",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:104",
+      "evidence": "GET /dashboard -> dashboard (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 104,
+      "endpoint": "/dashboard",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: POST /serialize",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/insec_des_lab/main.py:22",
+      "evidence": "POST /serialize -> serialize_data (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/insec_des_lab/main.py",
+      "line": 22,
+      "endpoint": "/serialize",
+      "method": "POST",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: POST /deserialize",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/insec_des_lab/main.py:31",
+      "evidence": "POST /deserialize -> deserialize_data (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/insec_des_lab/main.py",
+      "line": 31,
+      "endpoint": "/deserialize",
+      "method": "POST",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /about/",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py:6",
+      "evidence": "GET /about/ -> views.about (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py",
+      "line": 6,
+      "endpoint": "/about/",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /login/",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py:7",
+      "evidence": "GET /login/ -> views.login_view (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py",
+      "line": 7,
+      "endpoint": "/login/",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /register/",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py:8",
+      "evidence": "GET /register/ -> views.register_view (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py",
+      "line": 8,
+      "endpoint": "/register/",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /api/all-users/",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py:13",
+      "evidence": "GET /api/all-users/ -> views.all_users_data_view (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py",
+      "line": 13,
+      "endpoint": "/api/all-users/",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /lesson/",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py:16",
+      "evidence": "GET /lesson/ -> views.sensitive_data_exposure_lesson (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py",
+      "line": 16,
+      "endpoint": "/lesson/",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:9",
+      "evidence": "GET / -> views.home (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 9,
+      "endpoint": "/",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /xss",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:10",
+      "evidence": "GET /xss -> views.xss (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 10,
+      "endpoint": "/xss",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /xssL",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:11",
+      "evidence": "GET /xssL -> views.xss_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 11,
+      "endpoint": "/xssL",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /xssL2",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:12",
+      "evidence": "GET /xssL2 -> views.xss_lab2 (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 12,
+      "endpoint": "/xssL2",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /xssL3",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:13",
+      "evidence": "GET /xssL3 -> views.xss_lab3 (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 13,
+      "endpoint": "/xssL3",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /xssL1",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:14",
+      "evidence": "GET /xssL1 -> views.xss_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 14,
+      "endpoint": "/xssL1",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /sql",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:15",
+      "evidence": "GET /sql -> views.sql (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 15,
+      "endpoint": "/sql",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /sql_lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:16",
+      "evidence": "GET /sql_lab -> views.sql_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 16,
+      "endpoint": "/sql_lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /sql_lab1",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:17",
+      "evidence": "GET /sql_lab1 -> views.sql_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 17,
+      "endpoint": "/sql_lab1",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /insec_des",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:18",
+      "evidence": "GET /insec_des -> views.insec_des (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 18,
+      "endpoint": "/insec_des",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /insec_des_lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:19",
+      "evidence": "GET /insec_des_lab -> views.insec_des_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 19,
+      "endpoint": "/insec_des_lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /xxe",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:20",
+      "evidence": "GET /xxe -> views.xxe (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 20,
+      "endpoint": "/xxe",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /xxe_lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:21",
+      "evidence": "GET /xxe_lab -> views.xxe_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 21,
+      "endpoint": "/xxe_lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /auth_lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:24",
+      "evidence": "GET /auth_lab -> views.auth_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 24,
+      "endpoint": "/auth_lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /auth_lab/signup",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:25",
+      "evidence": "GET /auth_lab/signup -> views.auth_lab_signup (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 25,
+      "endpoint": "/auth_lab/signup",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /auth_lab/login",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:26",
+      "evidence": "GET /auth_lab/login -> views.auth_lab_login (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 26,
+      "endpoint": "/auth_lab/login",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /auth_lab/logout",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:27",
+      "evidence": "GET /auth_lab/logout -> views.auth_lab_logout (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 27,
+      "endpoint": "/auth_lab/logout",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /auth",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:28",
+      "evidence": "GET /auth -> views.auth_home (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 28,
+      "endpoint": "/auth",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /data_exp",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:31",
+      "evidence": "GET /data_exp -> views.data_exp (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 31,
+      "endpoint": "/data_exp",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /data_exp_lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:32",
+      "evidence": "GET /data_exp_lab -> views.data_exp_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 32,
+      "endpoint": "/data_exp_lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /robots.txt",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:33",
+      "evidence": "GET /robots.txt -> views.robots (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 33,
+      "endpoint": "/robots.txt",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /500error",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:34",
+      "evidence": "GET /500error -> views.error (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 34,
+      "endpoint": "/500error",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /cmd",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:35",
+      "evidence": "GET /cmd -> views.cmd (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 35,
+      "endpoint": "/cmd",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /bau",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:38",
+      "evidence": "GET /bau -> views.bau (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 38,
+      "endpoint": "/bau",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /bau_lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:39",
+      "evidence": "GET /bau_lab -> views.bau_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 39,
+      "endpoint": "/bau_lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /login_otp",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:40",
+      "evidence": "GET /login_otp -> views.login_otp (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 40,
+      "endpoint": "/login_otp",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /sec_mis",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:42",
+      "evidence": "GET /sec_mis -> views.sec_mis (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 42,
+      "endpoint": "/sec_mis",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /sec_mis_lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:43",
+      "evidence": "GET /sec_mis_lab -> views.sec_mis_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 43,
+      "endpoint": "/sec_mis_lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /sec_mis_lab3",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:44",
+      "evidence": "GET /sec_mis_lab3 -> views.sec_misconfig_lab3 (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 44,
+      "endpoint": "/sec_mis_lab3",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /secret",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:45",
+      "evidence": "GET /secret -> views.secret (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 45,
+      "endpoint": "/secret",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /a9",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:46",
+      "evidence": "GET /a9 -> views.a9 (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 46,
+      "endpoint": "/a9",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /get_version",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:49",
+      "evidence": "GET /get_version -> views.get_version (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 49,
+      "endpoint": "/get_version",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /a10",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:50",
+      "evidence": "GET /a10 -> views.a10 (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 50,
+      "endpoint": "/a10",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /a10_lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:51",
+      "evidence": "GET /a10_lab -> views.a10_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 51,
+      "endpoint": "/a10_lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /debug",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:53",
+      "evidence": "GET /debug -> views.debug (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 53,
+      "endpoint": "/debug",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /insecure-design",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:54",
+      "evidence": "GET /insecure-design -> views.insec_desgine (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 54,
+      "endpoint": "/insecure-design",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /insecure-design_lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:55",
+      "evidence": "GET /insecure-design_lab -> views.insec_desgine_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 55,
+      "endpoint": "/insecure-design_lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /broken_access_lab_3",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:59",
+      "evidence": "GET /broken_access_lab_3 -> views.a1_broken_access_lab_3 (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 59,
+      "endpoint": "/broken_access_lab_3",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /broken_access_control/secret",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:60",
+      "evidence": "GET /broken_access_control/secret -> views.a1_broken_access_lab3_secret (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 60,
+      "endpoint": "/broken_access_control/secret",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /ssrf",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:61",
+      "evidence": "GET /ssrf -> views.ssrf (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 61,
+      "endpoint": "/ssrf",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /ssrf_discussion",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:62",
+      "evidence": "GET /ssrf_discussion -> views.ssrf_discussion (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 62,
+      "endpoint": "/ssrf_discussion",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /ssrf_lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:63",
+      "evidence": "GET /ssrf_lab -> views.ssrf_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 63,
+      "endpoint": "/ssrf_lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /ssrf_target",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:65",
+      "evidence": "GET /ssrf_target -> views.ssrf_target (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 65,
+      "endpoint": "/ssrf_target",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /ssti",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:69",
+      "evidence": "GET /ssti -> views.ssti (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 69,
+      "endpoint": "/ssti",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /ssti/lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:70",
+      "evidence": "GET /ssti/lab -> views.ssti_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 70,
+      "endpoint": "/ssti/lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /ssti/blog/{blog_id}",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:71",
+      "evidence": "GET /ssti/blog/{blog_id} -> views.ssti_view_blog (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 71,
+      "endpoint": "/ssti/blog/{blog_id}",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /cryptographic_failure",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:72",
+      "evidence": "GET /cryptographic_failure -> views.crypto_failure (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 72,
+      "endpoint": "/cryptographic_failure",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /cryptographic_failure/lab",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:73",
+      "evidence": "GET /cryptographic_failure/lab -> views.crypto_failure_lab (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 73,
+      "endpoint": "/cryptographic_failure/lab",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /cryptographic_failure/lab2",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:74",
+      "evidence": "GET /cryptographic_failure/lab2 -> views.crypto_failure_lab2 (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 74,
+      "endpoint": "/cryptographic_failure/lab2",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /cryptographic_failure/lab3",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:75",
+      "evidence": "GET /cryptographic_failure/lab3 -> views.crypto_failure_lab3 (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 75,
+      "endpoint": "/cryptographic_failure/lab3",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /2021/discussion/A9/target",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:84",
+      "evidence": "GET /2021/discussion/A9/target -> log_function_target (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 84,
+      "endpoint": "/2021/discussion/A9/target",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /mitre/9/lab/api/{recipent}/{amount}",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/introduction/urls.py:118",
+      "evidence": "GET /mitre/9/lab/api/{recipent}/{amount} -> mitre.csrf_transfer_monei_api (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 118,
+      "endpoint": "/mitre/9/lab/api/{recipent}/{amount}",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /admin/",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/pygoat/urls.py:23",
+      "evidence": "GET /admin/ -> admin.site.urls (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/pygoat/urls.py",
+      "line": 23,
+      "endpoint": "/admin/",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /register",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/pygoat/urls.py:26",
+      "evidence": "GET /register -> v.register (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/pygoat/urls.py",
+      "line": 26,
+      "endpoint": "/register",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /logout/",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/pygoat/pygoat/urls.py:28",
+      "evidence": "GET /logout/ -> auth_views.LogoutView (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/pygoat/pygoat/urls.py",
+      "line": 28,
+      "endpoint": "/logout/",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "CFG-08",
+      "title": "app.run(debug=True) enables debugger + reloader",
+      "severity": "High",
+      "tool": "config",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:123",
+      "evidence": "app.run(host='0.0.0.0', port=5000, debug=True)  # Vulnerable: Debug mode enabled in production",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Use app.run(debug=os.environ.get('FLASK_DEBUG') == '1'); never ship debug=True.",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 123,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "CFG-02",
+      "title": "ALLOWED_HOSTS allows '*' (any host)",
+      "severity": "High",
+      "tool": "config",
+      "where": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/sensitive_data_lab/settings.py:13",
+      "evidence": "ALLOWED_HOSTS = ['*']",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "List explicit hostnames, e.g. ALLOWED_HOSTS = ['example.com'].",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/sensitive_data_lab/settings.py",
+      "line": 13,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B324",
+      "title": "hashlib [B324]",
+      "severity": "High",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:86",
+      "evidence": "85             # Vulnerable: Predictable token generation\n86             token = hashlib.md5(f\"{email}:{datetime.now()}\".encode()).hexdigest()\n87             password_reset_tokens[token] = username\n",
+      "owasp": "A02:2021 \u2014 Cryptographic Failures",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 86,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B201",
+      "title": "flask_debug_true [B201]",
+      "severity": "High",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:123",
+      "evidence": "122 if __name__ == '__main__':\n123     app.run(host='0.0.0.0', port=5000, debug=True)  # Vulnerable: Debug mode enabled in production \n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 123,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B324",
+      "title": "hashlib [B324]",
+      "severity": "High",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/mitre.py:161",
+      "evidence": "160         username = request.POST.get('username')\n161         password = md5(password.encode()).hexdigest()\n162         User = CSRF_user_tbl.objects.filter(username=username, password=password)\n",
+      "owasp": "A02:2021 \u2014 Cryptographic Failures",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/mitre.py",
+      "line": 161,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B602",
+      "title": "subprocess_popen_with_shell_equals_true [B602]",
+      "severity": "High",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/mitre.py:233",
+      "evidence": "232 def command_out(command):\n233     process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)\n234     return process.communicate()\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Drop shell=True; pass argv list with shell=False and shlex-quote inputs.",
+      "file": "/private/tmp/pygoat/introduction/mitre.py",
+      "line": 233,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B602",
+      "title": "subprocess_popen_with_shell_equals_true [B602]",
+      "severity": "High",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:432",
+      "evidence": "431                     command,\n432                     shell=True,\n433                     stdout=subprocess.PIPE, \n434                     stderr=subprocess.PIPE)\n435                 stdout, stderr = process.communicate()\n436                 data = stdout.decode('utf-8')\n437                 stderr = stderr.decode('utf-8')\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Drop shell=True; pass argv list with shell=False and shlex-quote inputs.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 432,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B324",
+      "title": "hashlib [B324]",
+      "severity": "High",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:1026",
+      "evidence": "1025             try:\n1026                 password = md5(password.encode()).hexdigest()\n1027                 user = CF_user.objects.filter(username=username,password=password).first()\n",
+      "owasp": "A02:2021 \u2014 Cryptographic Failures",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 1026,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B104",
+      "title": "hardcoded_bind_all_interfaces [B104]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:123",
+      "evidence": "122 if __name__ == '__main__':\n123     app.run(host='0.0.0.0', port=5000, debug=True)  # Vulnerable: Debug mode enabled in production \n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 123,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B301",
+      "title": "blacklist [B301]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/dockerized_labs/insec_des_lab/main.py:36",
+      "evidence": "35         # Intentionally vulnerable deserialization, matching PyGoat\n36         user = pickle.loads(decoded_data)\n37         \n",
+      "owasp": "A08:2021 \u2014 Software and Data Integrity Failures",
+      "fix": "Avoid pickle on untrusted data; use json with strict schema validation.",
+      "file": "/private/tmp/pygoat/dockerized_labs/insec_des_lab/main.py",
+      "line": 36,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B104",
+      "title": "hardcoded_bind_all_interfaces [B104]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/dockerized_labs/insec_des_lab/main.py:51",
+      "evidence": "50 if __name__ == '__main__':\n51     app.run(host='0.0.0.0', port=8080)\n52 \n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/dockerized_labs/insec_des_lab/main.py",
+      "line": 51,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B506",
+      "title": "yaml_load [B506]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/lab_code/test.py:23",
+      "evidence": "22 stream = open('/home/fox/test.yaml', 'r')\n23 data = yaml.load(stream)\n24 \n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Use yaml.safe_load, never yaml.load without Loader=SafeLoader.",
+      "file": "/private/tmp/pygoat/introduction/lab_code/test.py",
+      "line": 23,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B307",
+      "title": "blacklist [B307]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/mitre.py:218",
+      "evidence": "217         expression = request.POST.get('expression')\n218         result = eval(expression)\n219         return JsonResponse({'result': result})\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Remove eval(); use ast.literal_eval or a safe parser.",
+      "file": "/private/tmp/pygoat/introduction/mitre.py",
+      "line": 218,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B113",
+      "title": "request_without_timeout [B113]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/playground/A6/soln.py:9",
+      "evidence": "8         url = f\"https://pypi.org/pypi/{k[0]}/{k[1]}/json\"\n9         response = requests.get(url)\n10         response.raise_for_status()\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/playground/A6/soln.py",
+      "line": 9,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B113",
+      "title": "request_without_timeout [B113]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/playground/A6/utility.py:9",
+      "evidence": "8         url = f\"https://pypi.org/pypi/{k[0]}/{k[1]}/json\"\n9         response = requests.get(url)\n10         response.raise_for_status()\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/playground/A6/utility.py",
+      "line": 9,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B608",
+      "title": "hardcoded_sql_expressions [B608]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:158",
+      "evidence": "157 \n158                 sql_query = \"SELECT * FROM introduction_login WHERE user='\"+name+\"' AND password='\"+password+\"'\"\n159                 print(sql_query)\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Parameterize SQL (placeholders); never format values into the query string.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 158,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B301",
+      "title": "blacklist [B301]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:214",
+      "evidence": "213             token = base64.b64decode(token)\n214             admin = pickle.loads(token)\n215             if admin.admin == 1:\n",
+      "owasp": "A08:2021 \u2014 Software and Data Integrity Failures",
+      "fix": "Avoid pickle on untrusted data; use json with strict schema validation.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 214,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B317",
+      "title": "blacklist [B317]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:258",
+      "evidence": "257 \n258     parser = make_parser()\n259     parser.setFeature(feature_external_ges, True)\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 258,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B319",
+      "title": "blacklist [B319]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:260",
+      "evidence": "259     parser.setFeature(feature_external_ges, True)\n260     doc = parseString(request.body.decode('utf-8'), parser=parser)\n261     for event, node in doc:\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 260,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B307",
+      "title": "blacklist [B307]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:460",
+      "evidence": "459             try:\n460                 output = eval(val)\n461             except:\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Remove eval(); use ast.literal_eval or a safe parser.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 460,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B506",
+      "title": "yaml_load [B506]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:560",
+      "evidence": "559                 try :\n560                     data = yaml.load(file,yaml.Loader)\n561                     \n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Use yaml.safe_load, never yaml.load without Loader=SafeLoader.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 560,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B608",
+      "title": "hardcoded_sql_expressions [B608]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:864",
+      "evidence": "863         if name:\n864             sql_query = \"SELECT * FROM introduction_sql_lab_table WHERE id='\"+name+\"'AND password='\"+password+\"'\"\n865 \n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Parameterize SQL (placeholders); never format values into the query string.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 864,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B113",
+      "title": "request_without_timeout [B113]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:963",
+      "evidence": "962         try:\n963             response = requests.get(url)\n964             return render(request, \"Lab/ssrf/ssrf_lab2.html\", {\"response\": response.content.decode()})\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 963,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "CFG-06",
+      "title": "SESSION_COOKIE_SECURE not set (defaults to False)",
+      "severity": "Low",
+      "tool": "config",
+      "where": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/sensitive_data_lab/settings.py:1",
+      "evidence": "SESSION_COOKIE_SECURE absent; Django default sends cookies over HTTP.",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Set SESSION_COOKIE_SECURE = True in production.",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/sensitive_data_lab/settings.py",
+      "line": 1,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "CFG-06",
+      "title": "CSRF_COOKIE_SECURE not set (defaults to False)",
+      "severity": "Low",
+      "tool": "config",
+      "where": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/sensitive_data_lab/settings.py:1",
+      "evidence": "CSRF_COOKIE_SECURE absent; Django default sends cookies over HTTP.",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Set CSRF_COOKIE_SECURE = True in production.",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/sensitive_data_lab/settings.py",
+      "line": 1,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "CFG-06",
+      "title": "SESSION_COOKIE_SECURE not set (defaults to False)",
+      "severity": "Low",
+      "tool": "config",
+      "where": "/private/tmp/pygoat/pygoat/settings.py:1",
+      "evidence": "SESSION_COOKIE_SECURE absent; Django default sends cookies over HTTP.",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Set SESSION_COOKIE_SECURE = True in production.",
+      "file": "/private/tmp/pygoat/pygoat/settings.py",
+      "line": 1,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "CFG-06",
+      "title": "CSRF_COOKIE_SECURE not set (defaults to False)",
+      "severity": "Low",
+      "tool": "config",
+      "where": "/private/tmp/pygoat/pygoat/settings.py:1",
+      "evidence": "CSRF_COOKIE_SECURE absent; Django default sends cookies over HTTP.",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Set CSRF_COOKIE_SECURE = True in production.",
+      "file": "/private/tmp/pygoat/pygoat/settings.py",
+      "line": 1,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B110",
+      "title": "try_except_pass [B110]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/challenge/management/commands/populate_challenge.py:17",
+      "evidence": "16                     Challenge.objects.create(**challenge).save()\n17                 except:\n18                     pass\n19         except FileNotFoundError:\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/challenge/management/commands/populate_challenge.py",
+      "line": 17,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B110",
+      "title": "try_except_pass [B110]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/challenge/views.py:42",
+      "evidence": "41             user_chall_exists = True\n42         except:\n43             pass\n44 \n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/challenge/views.py",
+      "line": 42,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:8",
+      "evidence": "7 app = Flask(__name__)\n8 app.secret_key = 'your-secret-key-here'  # Vulnerable: Hardcoded secret key\n9 \n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 8,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:13",
+      "evidence": "12     'admin': {\n13         'password': 'admin123',  # Vulnerable: Weak password\n14         'email': 'admin@example.com',\n15         'role': 'admin'\n16     },\n17     'user': {\n18         'password': 'password123',  # Vulnerable: Weak password\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 13,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:18",
+      "evidence": "17     'user': {\n18         'password': 'password123',  # Vulnerable: Weak password\n19         'email': 'user@example.com',\n20         'role': 'user'\n21     }\n22 }\n23 \n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 18,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B110",
+      "title": "try_except_pass [B110]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py:117",
+      "evidence": "116                                 email=users[username]['email'])\n117     except:\n118         pass\n119     \n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 117,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B403",
+      "title": "blacklist [B403]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/dockerized_labs/insec_des_lab/main.py:2",
+      "evidence": "1 from flask import Flask, render_template, request, make_response\n2 import pickle\n3 import base64\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/dockerized_labs/insec_des_lab/main.py",
+      "line": 2,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B311",
+      "title": "blacklist [B311]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/views.py:42",
+      "evidence": "41     chars = string.ascii_lowercase + string.digits\n42     return ''.join(random.choices(chars, k=16))  # 16 chars should be enough right?\n43 \n",
+      "owasp": "A02:2021 \u2014 Cryptographic Failures",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/views.py",
+      "line": 42,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/sensitive_data_lab/settings.py:8",
+      "evidence": "7 # SECURITY WARNING: keep the secret key used in production secret!\n8 SECRET_KEY = 'django-insecure-key-for-demonstration-only'\n9 \n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/sensitive_data_lab/settings.py",
+      "line": 8,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/playground/A9/api.py:17",
+      "evidence": "16         L.info(f\"POST request with username {username} and password {password}\")\n17         if username == \"admin\" and password == \"admin\":\n18             return JsonResponse({\"message\":\"Loged in successfully\", \"method\":\"post\"},status = 200)\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/introduction/playground/A9/api.py",
+      "line": 17,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/playground/A9/archive.py:17",
+      "evidence": "16         L.info(f\"POST request with username {username} and password {password}\")\n17         if username == \"admin\" and password == \"admin\":\n18             return JsonResponse({\"message\":\"Loged in successfully\", \"method\":\"post\"},status = 200)\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/introduction/playground/A9/archive.py",
+      "line": 17,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B403",
+      "title": "blacklist [B403]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:7",
+      "evidence": "6 import os\n7 import pickle\n8 import random\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 7,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B409",
+      "title": "blacklist [B409]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:17",
+      "evidence": "16 from random import randint\n17 from xml.dom.pulldom import START_ELEMENT, parseString\n18 from xml.sax import make_parser\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 17,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B406",
+      "title": "blacklist [B406]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:18",
+      "evidence": "17 from xml.dom.pulldom import START_ELEMENT, parseString\n18 from xml.sax import make_parser\n19 from xml.sax.handler import feature_external_ges\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 18,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B406",
+      "title": "blacklist [B406]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:19",
+      "evidence": "18 from xml.sax import make_parser\n19 from xml.sax.handler import feature_external_ges\n20 \n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 19,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B311",
+      "title": "blacklist [B311]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:496",
+      "evidence": "495         email=request.GET.get('email')\n496         otpN=randint(100,999)\n497         if email and otpN:\n",
+      "owasp": "A02:2021 \u2014 Cryptographic Failures",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 496,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:538",
+      "evidence": "537     if(XHost == 'admin.localhost:8000'):\n538         return render(request,\"Lab/sec_mis/sec_mis_lab.html\", {\"secret\": \"S3CR37K3Y\"})\n539     else:\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 538,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B311",
+      "title": "blacklist [B311]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:680",
+      "evidence": "679 def gentckt():\n680     return (''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))\n681 \n",
+      "owasp": "A02:2021 \u2014 Cryptographic Failures",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 680,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:766",
+      "evidence": "765                 })\n766         elif (name=='jack' and password=='jacktheripper'): # Will implement hashing here\n767             html = render(\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 766,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:806",
+      "evidence": "805                 })\n806         elif ( name=='jack' and password=='jacktheripper'): # Will implement hashing here\n807             html = render(\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 806,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:831",
+      "evidence": "830 \n831         if username == 'John' and password == 'reaper':\n832             return render(request,'Lab_2021/A1_BrokenAccessControl/broken_access_lab_3.html', {'loggedin':True, 'admin': False})\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 831,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:833",
+      "evidence": "832             return render(request,'Lab_2021/A1_BrokenAccessControl/broken_access_lab_3.html', {'loggedin':True, 'admin': False})\n833         elif username == 'admin' and password == 'admin_pass':\n834             return render(request,'Lab_2021/A1_BrokenAccessControl/broken_access_lab_3.html', {'loggedin':True, 'admin': True})\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 833,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B106",
+      "title": "hardcoded_password_funcarg [B106]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:866",
+      "evidence": "865 \n866             sql_instance = sql_lab_table(id=\"admin\", password=\"65079b006e85a7e798abecb99e47c154\")\n867             sql_instance.save()\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 866,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B106",
+      "title": "hardcoded_password_funcarg [B106]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:868",
+      "evidence": "867             sql_instance.save()\n868             sql_instance = sql_lab_table(id=\"jack\", password=\"jack\")\n869             sql_instance.save()\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 868,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B106",
+      "title": "hardcoded_password_funcarg [B106]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:870",
+      "evidence": "869             sql_instance.save()\n870             sql_instance = sql_lab_table(id=\"slinky\", password=\"b4f945433ea4c369c12741f62a23ccc0\")\n871             sql_instance.save()\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 870,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B106",
+      "title": "hardcoded_password_funcarg [B106]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:872",
+      "evidence": "871             sql_instance.save()\n872             sql_instance = sql_lab_table(id=\"bloke\", password=\"f8d1ce191319ea8f4d1d26e65e130dd5\")\n873             sql_instance.save()\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 872,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:1072",
+      "evidence": "1071             try:\n1072                 if username == \"User\" and password == \"P@$$w0rd\":\n1073                     expire = datetime.datetime.now() + datetime.timedelta(minutes=60)\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 1072,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:1164",
+      "evidence": "1163 USER_A7_LAB3 = {\n1164     \"User1\":{\"userid\":\"1\", \"username\":\"User1\", \"password\": \"491a2800b80719ea9e3c89ca5472a8bda1bdd1533d4574ea5bd85b70a8e93be0\"},\n1165     \"User2\":{\"userid\":\"2\", \"username\":\"User2\", \"password\": \"c577e95bf729b94c30a878d01155693a9cdddafbb2fe0d52143027474ecb91bc\"},\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 1164,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:1165",
+      "evidence": "1164     \"User1\":{\"userid\":\"1\", \"username\":\"User1\", \"password\": \"491a2800b80719ea9e3c89ca5472a8bda1bdd1533d4574ea5bd85b70a8e93be0\"},\n1165     \"User2\":{\"userid\":\"2\", \"username\":\"User2\", \"password\": \"c577e95bf729b94c30a878d01155693a9cdddafbb2fe0d52143027474ecb91bc\"},\n1166     \"User3\":{\"userid\":\"3\", \"username\":\"User3\", \"password\": \"5a91a66f0c86b5435fe748706b99c17e6e54a17e03c2a3ef8d0dfa918db41cf6\"},\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 1165,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:1166",
+      "evidence": "1165     \"User2\":{\"userid\":\"2\", \"username\":\"User2\", \"password\": \"c577e95bf729b94c30a878d01155693a9cdddafbb2fe0d52143027474ecb91bc\"},\n1166     \"User3\":{\"userid\":\"3\", \"username\":\"User3\", \"password\": \"5a91a66f0c86b5435fe748706b99c17e6e54a17e03c2a3ef8d0dfa918db41cf6\"},\n1167     \"User4\":{\"userid\":\"4\", \"username\":\"User4\", \"password\": \"6046bc3337728a60967a151ee584e4fd7c53740a49485ebdc38cac42a255f266\"}\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 1166,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:1167",
+      "evidence": "1166     \"User3\":{\"userid\":\"3\", \"username\":\"User3\", \"password\": \"5a91a66f0c86b5435fe748706b99c17e6e54a17e03c2a3ef8d0dfa918db41cf6\"},\n1167     \"User4\":{\"userid\":\"4\", \"username\":\"User4\", \"password\": \"6046bc3337728a60967a151ee584e4fd7c53740a49485ebdc38cac42a255f266\"}\n1168 }\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 1167,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B110",
+      "title": "try_except_pass [B110]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/introduction/views.py:1186",
+      "evidence": "1185                 return render(request,\"Lab_2021/A7_auth_failure/lab3.html\", {\"username\":session.user,\"success\":True})\n1186         except:\n1187             pass\n1188         return render(request, \"Lab_2021/A7_auth_failure/lab3.html\")\n",
+      "owasp": "A03:2021 \u2014 Injection",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/pygoat/introduction/views.py",
+      "line": 1186,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/pygoat/settings.py:25",
+      "evidence": "24 # SECURITY WARNING: keep the secret key used in production secret!\n25 SECRET_KEY = 'lr66%-a!$km5ed@n5ug!tya5bv!0(yqwa1tn!q%0%3m2nh%oml'\n26 \n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/pygoat/settings.py",
+      "line": 25,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/pygoat/pygoat/settings.py:171",
+      "evidence": "170 \n171 SECRET_COOKIE_KEY = \"PYGOAT\"\n172 CSRF_TRUSTED_ORIGINS = [\"http://127.0.0.1:8000\",\"http://0.0.0.0:8000\",\"http://172.16.189.10\"]\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/pygoat/pygoat/settings.py",
+      "line": 171,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    }
+  ],
+  "endpoints": [
+    {
+      "path": "/",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.home",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 9,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/2021/A8",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.software_and_data_integrity_failure",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 79,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/2021/A8/lab2",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.software_and_data_integrity_failure_lab2",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 80,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/2021/A8/lab3",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.software_and_data_integrity_failure_lab3",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 81,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/2021/discussion/A6",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.A6_discussion",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 87,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/2021/discussion/A6/api",
+      "methods": [
+        "GET"
+      ],
+      "view": "apis.A6_disscussion_api",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 88,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/2021/discussion/A6/api2",
+      "methods": [
+        "GET"
+      ],
+      "view": "apis.A6_disscussion_api_2",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 89,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/2021/discussion/A7",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.A7_discussion",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 85,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/2021/discussion/A7/api",
+      "methods": [
+        "GET"
+      ],
+      "view": "apis.A7_disscussion_api",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 86,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/2021/discussion/A9",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.A9_discussion",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 82,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/2021/discussion/A9/api",
+      "methods": [
+        "GET"
+      ],
+      "view": "apis.log_function_checker",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 83,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/2021/discussion/A9/target",
+      "methods": [
+        "GET"
+      ],
+      "view": "log_function_target",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 84,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/500error",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.error",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 34,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/a10",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.a10",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 50,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/a10_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.a10_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 51,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/a10_lab_2",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.a10_lab2",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 52,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/a9",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.a9",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 46,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/a9_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.a9_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 47,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/a9_lab2",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.a9_lab2",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 48,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/about/",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.about",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py",
+      "line": 6,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/admin/",
+      "methods": [
+        "GET"
+      ],
+      "view": "admin.site.urls",
+      "file": "/private/tmp/pygoat/pygoat/urls.py",
+      "line": 23,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/api/all-users/",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.all_users_data_view",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py",
+      "line": 13,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/api/ssrf",
+      "methods": [
+        "GET"
+      ],
+      "view": "apis.ssrf_code_checker",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 68,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/api/user-data/",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.api_data_view",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py",
+      "line": 12,
+      "auth": [
+        "login_required"
+      ],
+      "permissions": [],
+      "protection": "protected",
+      "source": "django-urls"
+    },
+    {
+      "path": "/auth",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.auth_home",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 28,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/auth_failure",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.auth_failure",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 76,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/auth_failure/lab2/admin12983gfugef81e8yeryepanel",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.auth_failure_lab2",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 77,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/auth_failure/lab3",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.auth_failure_lab3",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 78,
+      "auth": [
+        "authentication_decorator",
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/auth_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.auth_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 24,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/auth_lab/login",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.auth_lab_login",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 26,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/auth_lab/logout",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.auth_lab_logout",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 27,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/auth_lab/signup",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.auth_lab_signup",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 25,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/ba",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.ba",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 29,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/ba_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.ba_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 30,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/bau",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.bau",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 38,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/bau_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.bau_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 39,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/broken_access_control",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.a1_broken_access",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 56,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/broken_access_control/secret",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.a1_broken_access_lab3_secret",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 60,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/broken_access_lab_1",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.a1_broken_access_lab_1",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 57,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/broken_access_lab_2",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.a1_broken_access_lab_2",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 58,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/broken_access_lab_3",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.a1_broken_access_lab_3",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 59,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/cmd",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.cmd",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 35,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/cmd_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.cmd_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 36,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/cmd_lab2",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.cmd_lab2",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 37,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/cryptographic_failure",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.crypto_failure",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 72,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/cryptographic_failure/lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.crypto_failure_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 73,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/cryptographic_failure/lab2",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.crypto_failure_lab2",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 74,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/cryptographic_failure/lab3",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.crypto_failure_lab3",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 75,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/dashboard",
+      "methods": [
+        "GET"
+      ],
+      "view": "dashboard",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 104,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "flask-route"
+    },
+    {
+      "path": "/data_exp",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.data_exp",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 31,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/data_exp_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.data_exp_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 32,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/debug",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.debug",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 53,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/deserialize",
+      "methods": [
+        "POST"
+      ],
+      "view": "deserialize_data",
+      "file": "/private/tmp/pygoat/dockerized_labs/insec_des_lab/main.py",
+      "line": 31,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "flask-route"
+    },
+    {
+      "path": "/get_version",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.get_version",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 49,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/injection",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.injection",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 66,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/injection_sql_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.injection_sql_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 67,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/insec_des",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.insec_des",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 18,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/insec_des_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.insec_des_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 19,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/insecure-design",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.insec_desgine",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 54,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/insecure-design_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.insec_desgine_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 55,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "lab",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 32,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "flask-route"
+    },
+    {
+      "path": "/lesson/",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.sensitive_data_exposure_lesson",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py",
+      "line": 16,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/login",
+      "methods": [
+        "POST"
+      ],
+      "view": "login",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 36,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "flask-route"
+    },
+    {
+      "path": "/login/",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.login_view",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py",
+      "line": 7,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/login_otp",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.login_otp",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 40,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/logout/",
+      "methods": [
+        "GET"
+      ],
+      "view": "auth_views.LogoutView",
+      "file": "/private/tmp/pygoat/pygoat/urls.py",
+      "line": 28,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/1",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top1",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 91,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/10",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top10",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 100,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/11",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top11",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 101,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/12",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top12",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 102,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/13",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top13",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 103,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/14",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top14",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 104,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/15",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top15",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 105,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/16",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top16",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 106,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/17",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top17",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 107,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/17/lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_lab_17",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 121,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/17/lab/api",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_lab_17_api",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 122,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/18",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top18",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 108,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/19",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top19",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 109,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/2",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top2",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 92,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/20",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top20",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 110,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/21",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top21",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 111,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/22",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top22",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 112,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/23",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top23",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 113,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/24",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top24",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 114,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/25",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top25",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 115,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/25/lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_lab_25",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 120,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/25/lab/api",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_lab_25_api",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 119,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/3",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top3",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 93,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/4",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top4",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 94,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/5",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top5",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 95,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/6",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top6",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 96,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/7",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top7",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 97,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/8",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top8",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 98,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/9",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.mitre_top9",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 99,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/9/lab/api/{recipent}/{amount}",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.csrf_transfer_monei_api",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 118,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/9/lab/login",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.csrf_lab_login",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 116,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/mitre/9/lab/transaction",
+      "methods": [
+        "GET"
+      ],
+      "view": "mitre.csrf_transfer_monei",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 117,
+      "auth": [
+        "authentication_decorator",
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/otp",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.Otp",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 41,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/profile/",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.profile_view",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py",
+      "line": 9,
+      "auth": [
+        "login_required"
+      ],
+      "permissions": [],
+      "protection": "protected",
+      "source": "django-urls"
+    },
+    {
+      "path": "/register",
+      "methods": [
+        "GET"
+      ],
+      "view": "v.register",
+      "file": "/private/tmp/pygoat/pygoat/urls.py",
+      "line": 26,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/register",
+      "methods": [
+        "POST"
+      ],
+      "view": "register",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 59,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "flask-route"
+    },
+    {
+      "path": "/register/",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.register_view",
+      "file": "/private/tmp/pygoat/dockerized_labs/sensitive_data_exposure/dataexposure/urls.py",
+      "line": 8,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/reset-password",
+      "methods": [
+        "POST"
+      ],
+      "view": "reset_password",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 79,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "flask-route"
+    },
+    {
+      "path": "/reset/{token}",
+      "methods": [
+        "GET"
+      ],
+      "view": "reset_form",
+      "file": "/private/tmp/pygoat/dockerized_labs/broken_auth_lab/app.py",
+      "line": 98,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "flask-route"
+    },
+    {
+      "path": "/robots.txt",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.robots",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 33,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/sec_mis",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.sec_mis",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 42,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/sec_mis_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.sec_mis_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 43,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/sec_mis_lab3",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.sec_misconfig_lab3",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 44,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/secret",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.secret",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 45,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/serialize",
+      "methods": [
+        "POST"
+      ],
+      "view": "serialize_data",
+      "file": "/private/tmp/pygoat/dockerized_labs/insec_des_lab/main.py",
+      "line": 22,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "flask-route"
+    },
+    {
+      "path": "/sql",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.sql",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 15,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/sql_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.sql_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 16,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/sql_lab1",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.sql_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 17,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/ssrf",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.ssrf",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 61,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/ssrf_discussion",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.ssrf_discussion",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 62,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/ssrf_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.ssrf_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 63,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/ssrf_lab2",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.ssrf_lab2",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 64,
+      "auth": [
+        "authentication_decorator"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/ssrf_target",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.ssrf_target",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 65,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/ssti",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.ssti",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 69,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/ssti/blog/{blog_id}",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.ssti_view_blog",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 71,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/ssti/lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.ssti_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 70,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/xss",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.xss",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 10,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/xssL",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.xss_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 11,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/xssL1",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.xss_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 14,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/xssL2",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.xss_lab2",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 12,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/xssL3",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.xss_lab3",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 13,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/xxe",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.xxe",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 20,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/xxe_lab",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.xxe_lab",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 21,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/xxe_parse",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.xxe_parse",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 23,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/xxe_see",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.xxe_see",
+      "file": "/private/tmp/pygoat/introduction/urls.py",
+      "line": 22,
+      "auth": [
+        "csrf_exempt"
+      ],
+      "permissions": [],
+      "protection": "unknown",
+      "source": "django-urls"
+    },
+    {
+      "path": "/{challenge}",
+      "methods": [
+        "GET"
+      ],
+      "view": "DoItFast",
+      "file": "/private/tmp/pygoat/challenge/urls.py",
+      "line": 5,
+      "auth": [],
+      "permissions": [],
+      "protection": "open",
+      "source": "django-urls"
+    }
+  ],
+  "scanner_status": {
+    "pip-audit": "error (audit failed: ERROR:pip_audit._cli:Failed to install packages: ['/var/folders/kh/fqvfv05s3w1d2yd8g92zbwtr0000gn/T/tmprjiukxu3/bin/python3.14', '-m', 'pip', 'install', '--no-input', '--keyring-provider=subprocess', )",
+    "bandit": "ok (55 findings)",
+    "semgrep": "missing (binary not installed)",
+    "gitleaks": "missing (binary not installed)",
+    "config": "ok (10 findings)",
+    "hygiene": "ok (0 findings)",
+    "discovery": "ok (132 endpoints)"
+  },
+  "schema_version": 1
+}

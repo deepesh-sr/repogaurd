@@ -1,0 +1,17 @@
+# M5 evidence topology: repoguard scans the mounted target while PyGoat
+# serves on :8000. Usage:
+#   docker compose build
+#   docker compose up -d pygoat
+#   docker compose run --rm repoguard scan /target --url http://pygoat:8000
+services:
+  repoguard:
+    build: .
+    volumes:
+      - ${TARGET:-.}:/target:ro
+      - ${OUTPUT:-./repoguard-report}:/target/repoguard-report
+    depends_on:
+      - pygoat
+  pygoat:
+    image: pygoat/pygoat:latest
+    ports:
+      - "8000:8000"

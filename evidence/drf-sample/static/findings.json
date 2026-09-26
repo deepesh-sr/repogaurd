@@ -1,0 +1,200 @@
+{
+  "target": "/private/tmp/drf-sample",
+  "base_url": null,
+  "generated_at": "2026-09-26T17:22:19.118507+00:00",
+  "summary": {
+    "counts": {
+      "Critical": 0,
+      "High": 4,
+      "Medium": 1,
+      "Low": 3,
+      "Info": 0
+    },
+    "total": 8,
+    "fix_first": [
+      "CFG-01",
+      "CFG-03",
+      "DISC-OPEN-ENDPOINT",
+      "CFG-02",
+      "BANDIT-B108",
+      "CFG-06",
+      "CFG-06",
+      "BANDIT-B105"
+    ]
+  },
+  "findings": [
+    {
+      "id": "CFG-01",
+      "title": "DEBUG=True in Django settings",
+      "severity": "High",
+      "tool": "config",
+      "where": "/private/tmp/drf-sample/settings.py:6",
+      "evidence": "DEBUG = True  # CFG-01 (deliberate)",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Set DEBUG=False in production (env-gated: DEBUG = os.environ.get('DEBUG') == '1').",
+      "file": "/private/tmp/drf-sample/settings.py",
+      "line": 6,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "CFG-03",
+      "title": "Hardcoded Django SECRET_KEY",
+      "severity": "High",
+      "tool": "config",
+      "where": "/private/tmp/drf-sample/settings.py:7",
+      "evidence": "SECRET_KEY = <39-char literal>  (value withheld)",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Load from env/secret manager (SECRET_KEY = os.environ['SECRET_KEY']); rotate the exposed value.",
+      "file": "/private/tmp/drf-sample/settings.py",
+      "line": 7,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "DISC-OPEN-ENDPOINT",
+      "title": "Endpoint with no authentication: GET /api/notes/",
+      "severity": "High",
+      "tool": "discovery",
+      "where": "/private/tmp/drf-sample/urls.py:7",
+      "evidence": "GET /api/notes/ -> views.PublicNotes (no auth/permission classes, no @login_required).",
+      "owasp": "A01:2021 \u2014 Broken Access Control",
+      "fix": "Add permission_classes=[IsAuthenticated] (DRF) or @login_required (Django/Flask).",
+      "file": "/private/tmp/drf-sample/urls.py",
+      "line": 7,
+      "endpoint": "/api/notes/",
+      "method": "GET",
+      "references": []
+    },
+    {
+      "id": "CFG-02",
+      "title": "ALLOWED_HOSTS allows '*' (any host)",
+      "severity": "High",
+      "tool": "config",
+      "where": "/private/tmp/drf-sample/settings.py:8",
+      "evidence": "ALLOWED_HOSTS = [\"*\"]  # CFG-02 (deliberate)",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "List explicit hostnames, e.g. ALLOWED_HOSTS = ['example.com'].",
+      "file": "/private/tmp/drf-sample/settings.py",
+      "line": 8,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B108",
+      "title": "hardcoded_tmp_directory [B108]",
+      "severity": "Medium",
+      "tool": "bandit",
+      "where": "/private/tmp/drf-sample/settings.py:13",
+      "evidence": "12 DATABASES = {\"default\": {\"ENGINE\": \"django.db.backends.sqlite3\",\n13                          \"NAME\": \"/tmp/drf-sample-db.sqlite3\"}}\n14 INSTALLED_APPS = [\n15     \"django.contrib.auth\",\n",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Review flagged construct against bandit docs; apply safe alternative and re-scan.",
+      "file": "/private/tmp/drf-sample/settings.py",
+      "line": 13,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "CFG-06",
+      "title": "SESSION_COOKIE_SECURE not set (defaults to False)",
+      "severity": "Low",
+      "tool": "config",
+      "where": "/private/tmp/drf-sample/settings.py:1",
+      "evidence": "SESSION_COOKIE_SECURE absent; Django default sends cookies over HTTP.",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Set SESSION_COOKIE_SECURE = True in production.",
+      "file": "/private/tmp/drf-sample/settings.py",
+      "line": 1,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "CFG-06",
+      "title": "CSRF_COOKIE_SECURE not set (defaults to False)",
+      "severity": "Low",
+      "tool": "config",
+      "where": "/private/tmp/drf-sample/settings.py:1",
+      "evidence": "CSRF_COOKIE_SECURE absent; Django default sends cookies over HTTP.",
+      "owasp": "A05:2021 \u2014 Security Misconfiguration",
+      "fix": "Set CSRF_COOKIE_SECURE = True in production.",
+      "file": "/private/tmp/drf-sample/settings.py",
+      "line": 1,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    },
+    {
+      "id": "BANDIT-B105",
+      "title": "hardcoded_password_string [B105]",
+      "severity": "Low",
+      "tool": "bandit",
+      "where": "/private/tmp/drf-sample/settings.py:7",
+      "evidence": "6 DEBUG = True  # CFG-01 (deliberate)\n7 SECRET_KEY = \"drf-sample-hardcoded-key-for-proof-only\"  # CFG-03 (deliberate)\n8 ALLOWED_HOSTS = [\"*\"]  # CFG-02 (deliberate)\n",
+      "owasp": "A07:2021 \u2014 Identification and Authentication Failures",
+      "fix": "Move secret to env var; fail closed if unset.",
+      "file": "/private/tmp/drf-sample/settings.py",
+      "line": 7,
+      "endpoint": null,
+      "method": null,
+      "references": []
+    }
+  ],
+  "endpoints": [
+    {
+      "path": "/api/notes/",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.PublicNotes",
+      "file": "/private/tmp/drf-sample/urls.py",
+      "line": 7,
+      "auth": [],
+      "permissions": [
+        "AllowAny"
+      ],
+      "protection": "open",
+      "source": "django-urls"
+    },
+    {
+      "path": "/api/notes/create/",
+      "methods": [
+        "POST"
+      ],
+      "view": "views.CreateNote",
+      "file": "/private/tmp/drf-sample/urls.py",
+      "line": 9,
+      "auth": [],
+      "permissions": [],
+      "protection": "protected",
+      "source": "django-urls"
+    },
+    {
+      "path": "/api/profile/",
+      "methods": [
+        "GET"
+      ],
+      "view": "views.MyProfile",
+      "file": "/private/tmp/drf-sample/urls.py",
+      "line": 8,
+      "auth": [],
+      "permissions": [],
+      "protection": "protected",
+      "source": "django-urls"
+    }
+  ],
+  "scanner_status": {
+    "pip-audit": "skipped (no requirements*.txt / poetry.lock / Pipfile.lock)",
+    "bandit": "ok (2 findings)",
+    "semgrep": "missing (binary not installed)",
+    "gitleaks": "missing (binary not installed)",
+    "config": "ok (5 findings)",
+    "hygiene": "ok (0 findings)",
+    "discovery": "ok (3 endpoints)"
+  },
+  "schema_version": 1
+}

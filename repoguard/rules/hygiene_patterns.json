@@ -1,0 +1,24 @@
+{
+  "filename_globs": [
+    {"glob": ".env", "kind": "env", "severity": "High"},
+    {"glob": ".env.*", "kind": "env", "severity": "High"},
+    {"glob": "*.env", "kind": "env", "severity": "High"},
+    {"glob": "*.pem", "kind": "private-key", "severity": "High"},
+    {"glob": "*.key", "kind": "private-key", "severity": "High"},
+    {"glob": "id_rsa*", "kind": "private-key", "severity": "High"},
+    {"glob": "id_dsa*", "kind": "private-key", "severity": "High"},
+    {"glob": "*.p12", "kind": "certificate", "severity": "Medium"},
+    {"glob": "*.pfx", "kind": "certificate", "severity": "Medium"},
+    {"glob": "*.crt", "kind": "certificate", "severity": "Medium"},
+    {"glob": "*.sql", "kind": "db-dump", "severity": "Medium"},
+    {"glob": "*.dump", "kind": "db-dump", "severity": "Medium"},
+    {"glob": "*.sqlite3", "kind": "db-dump", "severity": "Medium"},
+    {"glob": "*.bak", "kind": "backup", "severity": "Medium"}
+  ],
+  "content_sniffs": [
+    {"pattern": "-----BEGIN .*PRIVATE KEY-----", "kind": "private-key", "severity": "High"},
+    {"pattern": "-----BEGIN CERTIFICATE-----", "kind": "certificate", "severity": "Medium"},
+    {"pattern": "PostgreSQL database dump", "kind": "db-dump", "severity": "Medium"},
+    {"pattern": "MariaDB dump|^-- MySQL dump", "kind": "db-dump", "severity": "Medium"}
+  ]
+}
