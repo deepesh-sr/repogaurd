@@ -72,9 +72,5 @@ remaining High/Medium findings are the intentional `tests/fixtures/` vulns —
 - `semgrep`/`gitleaks` binaries missing on the build machine — adapters + mocked tests ship; real binaries ride the Dockerfile (unbuilt here).
 - `pip-audit` needs resolvable pins (fails loudly, not silently, on e.g. Pillow under 3.14).
 - IDOR/rate-limit probes are intentionally shallow heuristics; discovery is best-effort on dynamic routing (`include()` depth ≤3, same-file blueprint prefixes).
-- Screen recording must be captured on a Docker host with a browser (script: `scripts/demo.sh`).
+- Screen recording is supplied with the submission by mail.
 
-## Demo
-
-`scripts/demo.sh` runs the 5-scene recording script (install → tests → static
-scan → live scan → open report). Evidence reports live under `evidence/`.
