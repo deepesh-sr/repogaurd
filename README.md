@@ -17,7 +17,7 @@ runs the tool — RepoGuard never boots it.
 ## Run it (clean machine)
 
 ```bash
-git clone <this-repo> && cd repoguard
+git clone https://github.com/deepesh-sr/repogaurd.git && cd repogaurd
 pip install -e ".[dev]"          # scanners: pip install pip-audit bandit "semgrep~=1.90"
                                  # gitleaks: download v8.18.4 binary to PATH
 python -m pytest -q              # 64 tests, all green
@@ -64,7 +64,7 @@ remaining High/Medium findings are the intentional `tests/fixtures/` vulns —
 - **AST-only, never import target code** — importing `settings.py` executes untrusted code; discovery and config checks parse instead.
 - **DRF-aware auth classification** — class views inherit a strict global default (`protected`); plain function views don't; explicit `AllowAny` is always `open`. One finding per endpoint max.
 - **Lenient A1, capped A2** — unauthenticated 200-with-data is Critical (the most common real API bug); method fuzz covers state-changing verbs only.
-- **Smaller working beats bigger half-working** — no auto-fix, no SARIF/SBOM, no AI triage, no login automation, Django/Flask only. See `TECHNICAL_DOC.md` §5 for the full not-done list with reasons.
+- **Smaller working beats bigger half-working** — no auto-fix, no SARIF/SBOM, no AI triage, no login automation, Django/Flask only (full list under "What is not done" below).
 
 ## What is not done (gaps)
 
@@ -74,6 +74,7 @@ remaining High/Medium findings are the intentional `tests/fixtures/` vulns —
 - IDOR/rate-limit probes are intentionally shallow heuristics; discovery is best-effort on dynamic routing (`include()` depth ≤3, same-file blueprint prefixes).
 - Screen recording must be captured on a Docker host with a browser (script: `scripts/demo.sh`).
 
-## Docs
+## Demo
 
-`PLAN.md` (scope authority) · `ARCHITECTURE.md` (design) · `MILESTONES.md` (schedule + evidence log) · `TECHNICAL_DOC.md` (survey, decisions, glossary).
+`scripts/demo.sh` runs the 5-scene recording script (install → tests → static
+scan → live scan → open report). Evidence reports live under `evidence/`.
